@@ -1,53 +1,56 @@
 @import "tailwindcss";
 
-@layer components {
-    .title-section{
-        @apply flex flex-col items-center justify-center w-full py-24.75 px-50 gap-5
-        bg-[var(--sf-bg-secondary)];
+.title-section {
+    @apply flex flex-col items-center justify-center w-full gap-5 py-24.75 px-50;
+    background-color: var(--sf-bg-secondary);
+
+    & .ai-powered {
+        @apply flex flex-row items-center justify-center w-fit gap-2.5 rounded-xl py-1.25 px-2.5;
+        background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        box-shadow: var(--red-shadow);
+
+        & img {
+            @apply w-6 h-6;
+        }
+
+        & span {
+            @apply text-sm font-medium text-white;
+        }
     }
 
-    .title-section .ai-powered{
-        @apply flex flex-row items-center justify-center w-fit py-1.25 px-2.5 gap-2.5 rounded-xl 
-        bg-[var(--primary)] shadow-[var(--red-shadow)];
-    }
-
-    .title-section .ai-powered img {
-        @apply w-6 h-6;
-    }
-
-    .title-section .ai-powered span {
-        @apply text-sm font-medium text-white;
-    }
-
-    .title-section .hero{
+    & .hero {
         @apply flex flex-row items-center gap-5;
+
+        & .univ-logos {
+            @apply flex flex-row items-center justify-center;
+
+            & img:first-child {
+                @apply h-auto w-44;
+                filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.25));
+            }
+
+            & img:nth-child(2) {
+                @apply h-auto w-50;
+                filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.25));
+            }
+        }
     }
 
-    .title-section .hero .univ-logos {
-        @apply flex flex-row;
-    }
-
-    .title-section .hero .univ-logos img:first-child {
-        @apply w-[175px] h-auto drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)];
-    }
-
-    .title-section .hero .univ-logos img:nth-child(2) {
-        @apply w-[200px] h-auto drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)];
-    }
-
-    .title-section .hero-text{
+    & .hero-text {
         @apply flex flex-col items-baseline justify-center gap-0;
+
+        & h1 {
+            @apply text-[4rem] font-black;
+                color: var(--primary);
+
+            &:first-child span:first-child {
+                color: var(--secondary);
+            }
+        }
     }
 
-    .title-section .hero-text h1{
-        @apply text-[4rem] font-black text-[var(--primary)];
-    }
-
-    .title-section .hero-text h1:first-child span:first-child{
-        @apply text-[var(--secondary)];
-    }
-
-    .title-section .description p{
-        @apply text-xl text-[var(--text-gray)] text-center;
+    & .description p {
+        @apply text-xl text-center;
+        color: var(--text-gray);
     }
 }
