@@ -1,20 +1,27 @@
-.btn-primary-rd-shadow {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    background: var(--primary);
-    padding: 10px 20px; 
-    gap: 10px;  
-    border-radius: 12px;
-    box-shadow: var(--red-shadow);
-    color: var(--text-white);
-    font-size: 1rem;
-}
+@import "tailwindcss";
 
-.btn-primary-rd-shadow:hover{
-    background: var(--secondary);
-    transition: 0.3s ease;
-    cursor: pointer;
+@layer components{
+    .icon {
+        @apply p-2 text-2xl w-fit rounded-xl;
+    }
+    .icon.green {
+        @apply bg-green-500/20 text-green-500 border-1 border-green-500;
+    }
+    .icon.blue {
+        @apply bg-blue-500/20 text-blue-500 border-1 border-blue-500;
+    }
+    .icon.purple {
+        @apply bg-purple-500/20 text-purple-500 border-1 border-purple-500;
+    }
+    .icon.yellow {
+        @apply bg-yellow-500/20 text-yellow-500 border-1 border-yellow-500;
+    }
+
+    .btn-primary-rd-shadow {
+        @apply flex flex-row items-center justify-center w-fit 
+        text-white text-base font-medium rounded-xl px-5 py-2.5 gap-2.5
+        hover:bg-[var(--secondary)] transition-all duration-300 ease-in-out cursor-pointer;
+        background: var(--primary);
+        box-shadow: var(--red-shadow);
+    }
 }

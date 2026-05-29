@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@layer components {
+    .feature-card {
+        @apply flex flex-col justify-center rounded-xl p-6 shadow-xl gap-2 w-[320px] h-[190px];
+    }
+
+    .feature-card h3{
+        @apply text-sm font-bold;
+    }
+
+    .feature-card p{
+        @apply text-xs;
+        color: var(--text-gray);
+    }
+
+    .feature-card:hover {
+        @apply -translate-y-1 shadow-2xl transition-all duration-300 ease-in-out;
+    }
+}

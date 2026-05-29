@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@layer components {
+    .feature-section {
+        @apply flex flex-col items-center justify-center py-12;
+    }
+
+    .feature-section h2 {
+        @apply text-2xl font-extrabold text-black;
+    }
+
+    .feature-section p {
+        @apply text-sm;
+        color: var(--text-gray);
+    }
+
+    .features-container {
+        @apply flex flex-wrap gap-5 mt-10 justify-center items-center;
+    }
+}

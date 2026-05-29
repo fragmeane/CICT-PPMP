@@ -1,82 +1,53 @@
-.title-section{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 100px 200px;
-    gap: 20px;
-    background: var(--sf-bg-secondary);
-}
+@import "tailwindcss";
 
-.title-section .ai-powered{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    background: var(--primary);
-    padding: 5px 10px; 
-    gap: 10px;  
-    border-radius: 12px;
-    box-shadow: var(--red-shadow);
-}
+@layer components {
+    .title-section{
+        @apply flex flex-col items-center justify-center w-full py-24.75 px-50 gap-5
+        bg-[var(--sf-bg-secondary)];
+    }
 
-.title-section .ai-powered img {
-    width: 25px;
-    height: 25px;
-}
+    .title-section .ai-powered{
+        @apply flex flex-row items-center justify-center w-fit py-1.25 px-2.5 gap-2.5 rounded-xl 
+        bg-[var(--primary)] shadow-[var(--red-shadow)];
+    }
 
-.title-section .ai-powered span {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-white);
-}
+    .title-section .ai-powered img {
+        @apply w-6 h-6;
+    }
 
-.title-section .hero{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 20px;
-}
+    .title-section .ai-powered span {
+        @apply text-sm font-medium text-white;
+    }
 
-.title-section .hero .univ-logos {
-    display: flex;
-    flex-direction: row;
-}
+    .title-section .hero{
+        @apply flex flex-row items-center gap-5;
+    }
 
-.title-section .hero .univ-logos img:first-child {
-    width: 175px;
-    height: auto;
-    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
-}
+    .title-section .hero .univ-logos {
+        @apply flex flex-row;
+    }
 
-.title-section .hero .univ-logos img:nth-child(2) {
-    width: 200px;
-    height: auto;
-    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
-}
+    .title-section .hero .univ-logos img:first-child {
+        @apply w-[175px] h-auto drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)];
+    }
 
-.title-section .hero-text{
-    display: flex;
-    flex-direction: column;
-    align-items: baseline;
-    justify-content: center;
-    gap: 0px;
-}
+    .title-section .hero .univ-logos img:nth-child(2) {
+        @apply w-[200px] h-auto drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)];
+    }
 
-.title-section .hero-text h1{
-    font-size: 4rem;
-    font-weight: 900;
-    color: var(--primary);
-}
+    .title-section .hero-text{
+        @apply flex flex-col items-baseline justify-center gap-0;
+    }
 
-.title-section .hero-text h1:first-child span:first-child{
-    color: var(--secondary);
-}
+    .title-section .hero-text h1{
+        @apply text-[4rem] font-black text-[var(--primary)];
+    }
 
-.title-section .description p{
-    font-size: 1.25rem;
-    color: var(--text-gray);
-    text-align: center;
+    .title-section .hero-text h1:first-child span:first-child{
+        @apply text-[var(--secondary)];
+    }
+
+    .title-section .description p{
+        @apply text-xl text-[var(--text-gray)] text-center;
+    }
 }

@@ -30,7 +30,7 @@ export default function Title(){
                     and real-time tracking.
                 </p>
             </div>
-            <button className='btn-primary-rd-shadow'><IconLayoutDashboard size={25}/> <strong>Sign In</strong></button>
+            <button className='btn-primary-rd-shadow'><IconLayoutDashboard size={25} stroke={2}/> <strong>Sign In</strong></button>
         </section>
     );
 }
