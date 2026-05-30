@@ -49,7 +49,7 @@
         }
     }
 
-    & .description p {
+    & p {
         @apply text-xl text-center;
         color: var(--text-gray);
     }

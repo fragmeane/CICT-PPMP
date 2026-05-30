@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+.overview-section {
+    @apply flex flex-col items-center justify-center py-12 px-5;
+
+    & h2 {
+        @apply text-2xl font-extrabold text-black;
+    }
+
+    & > p {
+        @apply text-sm;
+        color: var(--text-gray);
+    }
+}
+
+.overview-container {
+    @apply flex flex-wrap gap-5 mt-10 justify-center items-stretch;
+}

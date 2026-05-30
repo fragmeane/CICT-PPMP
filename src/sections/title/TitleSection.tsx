@@ -23,13 +23,11 @@ export default function Title(){
                     <h1>Management System</h1>
                 </div>
             </div>
-            <div className="description">
-                <p>
-                    Streamline your Project Procurement Management Plan with 
-                    intelligent budget optimization, automated PR generation, 
-                    and real-time tracking.
-                </p>
-            </div>
+            <p>
+                Streamline your Project Procurement Management Plan with 
+                intelligent budget optimization, automated PR generation, 
+                and real-time tracking.
+            </p>
             <button className='btn-primary-rd-shadow'><IconLayoutDashboard size={25} stroke={2}/> <strong>Sign In</strong></button>
         </section>
     );

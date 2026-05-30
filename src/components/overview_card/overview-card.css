@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+.overview-card{
+    @apply flex flex-col justify-start p-12 rounded-xl w-full max-w-xl gap-2.5 text-white;
+    box-shadow: var(--red-shadow);
+
+    &.yellowred{
+        background: linear-gradient(to right, var(--secondary) 0%, var(--primary) 110%);
+    }
+    &.redgray{
+        background: linear-gradient(to right, var(--primary) 0%, var(--sf-bg) 120%);
+    }
+
+        & h3 {
+            @apply text-sm font-bold;
+        }
+    
+        & p {
+            @apply text-xs text-white;
+        }
+        & .icon-container {
+            @apply p-2.5 w-fit rounded-xl border border-white bg-white/20;
+        }
+        & .do-items {
+            @apply flex flex-row flex-wrap gap-2;
+            
+            & li {
+                @apply flex flex-row items-center gap-1 text-xs bg-white/20 rounded-md px-2 py-1;
+            }
+        }
+}

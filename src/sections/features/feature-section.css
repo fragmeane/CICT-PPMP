@@ -7,7 +7,7 @@
         @apply text-2xl font-extrabold text-black;
     }
 
-    & p {
+    & > p {
         @apply text-sm;
         color: var(--text-gray);
     }
