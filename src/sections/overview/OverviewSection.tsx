@@ -1,4 +1,4 @@
-import OverviewCard from '../../components/overview_card/OverviewCard';
+import OverviewCard from '../../components/cards/overview_card/OverviewCard';
 import './overview-section.css';
 import { IconUsers } from '@tabler/icons-react';
 import { IconShield } from '@tabler/icons-react';

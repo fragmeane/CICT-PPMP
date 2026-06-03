@@ -4,6 +4,7 @@ import bulsu from '../../assets/univlogo/bulsu_logo.svg';
 import cict from '../../assets/univlogo/cict_logo.svg';
 import arrow_primary from '../../assets/designs/arrow_primary.svg';
 import { IconLayoutDashboard } from '@tabler/icons-react';
+import { Link } from 'react-router';
 
 export default function Title(){
     return (
@@ -28,7 +29,7 @@ export default function Title(){
                 intelligent budget optimization, automated PR generation, 
                 and real-time tracking.
             </p>
-            <button className='btn-primary-rd-shadow'><IconLayoutDashboard size={25} stroke={2}/> <strong>Sign In</strong></button>
+            <Link to="/login" className='btn-primary-rd-shadow'><IconLayoutDashboard size={25} stroke={2}/> <strong>Sign In</strong></Link>
         </section>
     );
 }

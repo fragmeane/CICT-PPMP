@@ -29,7 +29,17 @@
     box-shadow: var(--red-shadow);
 
     &:hover {
-        @apply -translate-y-1;
+        @apply -translate-y-0.5;
         background-color: var(--secondary);
+    }
+}
+
+.btn-secondary {
+    @apply flex flex-row items-center justify-center w-fit 
+            text-base font-medium rounded-xl px-5 py-2.5 gap-2.5
+            transition-all duration-300 ease-in-out cursor-pointer border;
+
+    &:hover {
+        @apply -translate-y-0.5;
     }
 }

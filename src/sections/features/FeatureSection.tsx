@@ -1,4 +1,4 @@
-import FeatureCard from '../../components/feature_card/FeatureCard';
+import FeatureCard from '../../components/cards/feature_card/FeatureCard';
 import './feature-section.css';
 import { IconFileTypeXls } from '@tabler/icons-react';
 import { IconFileStack } from '@tabler/icons-react';
