@@ -15,6 +15,35 @@ export default function Login(){
         setShowPassword(!showPassword);
     };
 
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [emailError, setEmailError] = useState<string>('');
+    const [passwordError, setPasswordError] = useState<string>('');
+
+    function handleEmailChange(e : React.ChangeEvent<HTMLInputElement>){
+        const temp: string = e.target.value;
+        setEmail(temp);
+
+        if(!temp.trim()){
+            setEmailError("Email address is required.");
+        }else if(!temp.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){
+            setEmailError("Please enter a valid email address.");
+        }else{
+            setEmailError("");
+        }
+    }
+
+    function handlePasswordChange(e : React.ChangeEvent<HTMLInputElement>){
+        const temp: string = e.target.value;
+        setPassword(temp);
+
+        if(!temp.trim()){
+            setPasswordError("Password is required.");
+        }else{
+            setPasswordError("");
+        }
+    }
+
     return (
         <main className="login-page-container">
             <div className="left-right-container">
@@ -25,18 +54,20 @@ export default function Login(){
                             <label htmlFor="email">Email Address</label>
                             <div className="input-field">
                                 <IconUser />
-                                <input type="email" id="email" name="email" placeholder='Email' required />
+                                <input type="email" id="email" name="email" value={email} placeholder='Email' required onChange={handleEmailChange} />
                             </div>
+                            <p id='emailError' className='error-message'>{emailError}</p>
                         </div>
                         <div className="field-group">
                             <label htmlFor="password">Password</label>
                             <div className="input-field">
                                 <IconLock />
-                                <input type={showPassword ? "text" : "password"} id="password" name="password" placeholder='Password' required />
+                                <input type={showPassword ? "text" : "password"} id="password" name="password" value={password} onChange={handlePasswordChange} placeholder='Password' required />
                                 <button type="button" className="toggle-password cursor-pointer" onClick={togglePasswordVisibility}>
                                     {showPassword ? <IconEyeOff className="eye-off-icon" /> : <IconEye className="eye-icon" />}
                                 </button>
                             </div>
+                            <p id='passwordError' className='error-message'>{passwordError}</p>
                         </div>
                         <Link to="/forgot-password" className='forgot-password'>Forgot Password?</Link>
                         <button type="submit" className='btn-primary-rd-shadow'>

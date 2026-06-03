@@ -43,3 +43,7 @@
         @apply -translate-y-0.5;
     }
 }
+
+.error-message {
+    @apply text-sm text-red-500;
+}

@@ -2,8 +2,24 @@ import { Link } from 'react-router';
 import LeftLoginContainer from '../../components/containers/left_login_container/LeftLoginContainer';
 import './Login.css';
 import { IconUser } from '@tabler/icons-react';
+import { useState } from 'react';
 
 export default function ForgotPassword(){
+    const [email, setEmail] = useState<string>('')
+    const [emailError, setEmailError] = useState<string>('');
+
+    function handleEmailChange(e : React.ChangeEvent<HTMLInputElement>){
+        const temp: string = e.target.value;
+        setEmail(temp);
+
+        if(!temp.trim()){
+            setEmailError("Email address is required.");
+        }else if(!temp.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){
+            setEmailError("Please enter a valid email address.");
+        }else{
+            setEmailError("");
+        }
+    }
 
     return (
         <main className="login-page-container">
@@ -17,8 +33,9 @@ export default function ForgotPassword(){
                             <label htmlFor="email">Email Address</label>
                             <div className="input-field">
                                 <IconUser />
-                                <input type="email" id="email" name="email" placeholder='Email' required />
+                                <input type="email" id="email" name="email" value={email} placeholder='Email' required onChange={handleEmailChange} />
                             </div>
+                            <p id='emailError' className='error-message'>{emailError}</p>
                         </div>
                         <button type="submit" className='btn-primary-rd-shadow'>
                             <strong>Send Reset Link</strong>
