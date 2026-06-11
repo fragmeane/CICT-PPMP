@@ -1,9 +1,36 @@
 @import "tailwindcss";
 
 .dashboard-page-container{
-    @apply flex flex-col items-center justify-start w-[calc(100%-288px)] ml-72 mt-20 h-[calc(100%-5rem)] gap-5 p-5;
+    @apply flex flex-col items-center justify-start w-[calc(100%-288px)] ml-72 mt-20 h-[calc(100%-5rem)] gap-5 p-5
+        max-md:ml-0 max-md:w-full;
 
-    & .dashboard-card-container {
+    & > .dashboard-card-container {
         @apply flex flex-row items-start justify-center gap-5 w-full flex-wrap;
+    }
+
+    & > .lower-dashboard-container {
+        @apply flex flex-row flex-wrap items-start justify-center gap-5 w-full max-md:flex-col;
+
+        & > .procurement-timeline-container{
+            @apply flex flex-col items-start justify-start p-5 rounded-xl shadow-2xl w-full min-w-md;
+
+            & > .procurement-timeline-header {
+                @apply flex flex-row items-center justify-start gap-3 w-full pb-3;
+                border-bottom: 1px solid var(--text-gray);
+
+                & > .title-container{
+                    @apply flex flex-col items-start justify-start;
+
+                    & > h2 {
+                        @apply text-2xl font-bold;
+                    }
+
+                    & > p {
+                        @apply text-sm;
+                        color: var(--text-gray);
+                    }
+                }
+            }
+        }
     }
 }

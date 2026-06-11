@@ -1,7 +1,8 @@
 import { type JSX } from 'react';
 import DashboardCard from '../../components/cards/dashboard_card/DashboardCard';
 import './dashboard.css';
-import { IconWallet, IconFilter2Check, IconStatusChange, IconCurrencyDollarOff, IconGitPullRequestDraft, IconChecklist } from '@tabler/icons-react';
+import { IconWallet, IconFilter2Check, IconStatusChange, IconCurrencyDollarOff, IconGitPullRequestDraft, IconChecklist, IconTimelineEventText } from '@tabler/icons-react';
+import DashboardProcurementCard from '../../components/cards/dashboard_procurement_card/DashboardProcurementCard';
 
 export default function Dashboard(){
     interface DashboardData {
@@ -81,6 +82,42 @@ export default function Dashboard(){
                         additionalInfo={data.additionalInfo}
                     />
                 ))}
+            </div>
+            <div className="lower-dashboard-container">
+                <div className="procurement-timeline-container">
+                    <div className="procurement-timeline-header">
+                        <div className="icon royal-red">
+                            <IconTimelineEventText size={40}/>
+                        </div>
+                        <div className="title-container">
+                            <h2>Procurement Timeline</h2>
+                            <p>Track the progress of your procurement activities</p>
+                        </div>
+                    </div>
+                    <DashboardProcurementCard 
+                        icon="rejected"
+                        color="red" 
+                        title="Rejected PR" 
+                        description="Purchase requests that have been rejected" 
+                        date="2023-10-15" 
+                        value={20000}/>
+                    <DashboardProcurementCard 
+                        icon="upload"
+                        color="green" 
+                        title="Uploaded PR" 
+                        description="Purchase requests that have been uploaded" 
+                        date="2023-10-15" />
+                    <DashboardProcurementCard 
+                        icon="pr"
+                        color="blue" 
+                        title="Purchase Request" 
+                        description="Purchase request  of 10 SSD is requested" 
+                        date="2023-10-15" 
+                        value={50000}/>
+                </div>
+                <div className="ai-features-container">
+
+                </div>
             </div>
         </main>
     )
