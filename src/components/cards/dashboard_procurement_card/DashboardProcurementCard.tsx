@@ -10,7 +10,7 @@ export default function DashboardProcurementCard({icon, title, description, date
                 return 'green';
             case 'arrived':
                 return 'green';
-            case 'pr':
+            case 'requested':
                 return 'blue';
             case 'reallocate':
                 return 'orange';
@@ -29,7 +29,7 @@ export default function DashboardProcurementCard({icon, title, description, date
                     {icon ? (
                         <>
                             {icon === 'rejected' && <IconClockX size={24} />}
-                            {icon === 'pr' && <IconFileStack size={24} />}
+                            {icon === 'requested' && <IconFileStack size={24} />}
                             {icon === 'approved' && <IconClockCheck size={24} />}
                             {icon === 'arrived' && <IconClockCheck size={24} />}
                             {icon === 'reallocate' && <IconTransform size={24} />}

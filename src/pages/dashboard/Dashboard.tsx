@@ -1,7 +1,7 @@
 import { type JSX } from 'react';
 import DashboardCard from '../../components/cards/dashboard_card/DashboardCard';
 import './dashboard.css';
-import { IconWallet, IconFilter2Check, IconStatusChange, IconCurrencyDollarOff, IconGitPullRequestDraft, IconChecklist, IconTimelineEventText, IconScale, IconChartBarOff, IconTransform, IconClockDollar } from '@tabler/icons-react';
+import { IconWallet, IconFilter2Check, IconStatusChange, IconCurrencyDollarOff, IconGitPullRequestDraft, IconChecklist, IconTimelineEventText, IconScale, IconChartBarOff, IconTransform, IconClockDollar, IconAlertCircle, IconArrowRight } from '@tabler/icons-react';
 import DashboardProcurementCard from '../../components/cards/dashboard_procurement_card/DashboardProcurementCard';
 import alab from '../../assets/icons/alab.svg';
 import { Link } from 'react-router';
@@ -69,8 +69,10 @@ export default function Dashboard(){
         },
     ];
 
+    const inLieuAlert:number = 5; // Example ng kung ilan ang pending in-lieu requests
+
     return (
-        <main className="dashboard-page-container">
+        <main className="page-container dashboard">
             <div className="dashboard-card-container">
                 {dashboardData.map((data, index) => (
                     <DashboardCard
@@ -84,6 +86,19 @@ export default function Dashboard(){
                         additionalInfo={data.additionalInfo}
                     />
                 ))}
+                <div className="alert-card">
+                    <div className="icon yellow">
+                        <IconAlertCircle size={24} />
+                    </div>
+                    <div className="content">
+                        <h3>In Lieu Approval</h3>
+                        <span>{inLieuAlert}</span>
+                        <p>In-Lieu requests that require approval.</p>
+                    </div>
+                    <Link to="/in-lieu-approvals" className="view-details">
+                        View Details <IconArrowRight size={16} />
+                    </Link>
+                </div>
             </div>
             <div className="lower-dashboard-container">
                 <div className="procurement-timeline-container">

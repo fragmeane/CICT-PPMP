@@ -1,89 +1,115 @@
 @import "tailwindcss";
 
-.dashboard-page-container{
-    @apply flex flex-col items-center justify-start w-[calc(100%-288px)] ml-72 mt-20 h-[calc(100%-5rem)] gap-5 p-5
-        max-md:ml-0 max-md:w-full;
+.page-container{
+    &.dashboard{
+        & > .dashboard-card-container {
+            @apply flex flex-row items-start justify-center gap-5 w-full flex-wrap;
 
-    & > .dashboard-card-container {
-        @apply flex flex-row items-start justify-center gap-5 w-full flex-wrap;
-    }
+            & > .alert-card{
+                @apply flex flex-col items-start justify-start gap-1 p-5 rounded-xl flex-1 min-w-fit
+                    bg-gradient-to-bl from-yellow-500/50 to-white border-yellow-500 text-yellow-500 border-r-4;
+                box-shadow: var(--yellow-shadow);
 
-    & > .lower-dashboard-container {
-        @apply flex flex-row flex-wrap items-start justify-center gap-5 w-full max-md:flex-col;
-
-        & > .procurement-timeline-container{
-            @apply flex-6 flex flex-col items-start justify-start p-5 rounded-xl shadow-2xl w-full h-[450px];
-
-            & > .procurement-timeline-header {
-                @apply flex flex-row items-center justify-start gap-3 w-full pb-3;
-                border-bottom: 1px solid var(--text-gray);
-
-                & > .title-container{
-                    @apply flex flex-col items-start justify-start;
-
-                    & > h2 {
-                        @apply text-2xl font-bold;
+                & > .content{
+                    & > h3{
+                        @apply text-xs font-semibold;
                     }
-
-                    & > p {
-                        @apply text-sm;
-                        color: var(--text-gray);
+                    & > span{
+                        @apply text-xl font-bold;
+                    }
+                    & > p{
+                        @apply text-xs;
                     }
                 }
-            }
-            & > .content-container{
-                @apply flex flex-col items-center justify-start py-1 gap-1 w-full h-full overflow-y-auto;
-            }
-        }
-        & > .ai-features-container{
-            @apply flex-5 flex flex-col items-center justify-start rounded-xl w-full min-w-80 h-[450px];
-            box-shadow: var(--red-shadow);
-            
-            & > .ai-features-header{
-                @apply flex flex-row items-center justify-start gap-2 w-full pb-3 rounded-t-xl p-5;
-                background: linear-gradient(90deg, var(--primary), var(--secondary));
-
-                & > .title-container{
-                    @apply flex flex-col items-start justify-start;
-
-                    & > h2 {
-                        @apply text-base font-bold text-white;
-                    }
-
-                    & > p {
-                        @apply text-sm text-white;
-                    }
-                }
-            }
-            & > .content-container{
-                @apply flex flex-col items-center justify-evenly py-2 px-5 gap-2 w-full h-full overflow-y-auto;
-
-                & > .alab-link{
-                    @apply flex flex-row items-center gap-1 p-3 rounded-xl font-bold text-white text-sm w-full justify-center
-                    transition-all duration-300 ease-in-out cursor-pointer;
-                    background: linear-gradient(90deg, var(--primary), var(--secondary));
+                & > .view-details{
+                    @apply flex flex-row items-center gap-1 text-xs font-bold text-yellow-500 w-full justify-end
+                    transition-all duration-300 ease-in-out;
 
                     &:hover {
                         @apply -translate-y-0.5;
-                        box-shadow: var(--red-shadow);
+                        text-decoration: underline;
                     }
                 }
-                & > .ai-features-content{
-                    @apply flex flex-row items-center justify-between gap-3 w-full border p-3 rounded-xl;
-                    border-color: var(--text-gray);
+            }
+        }
 
-                    & > .description{
-                        @apply flex-1;
-                        & > h3 {
-                            @apply text-sm font-semibold;
+        & > .lower-dashboard-container {
+            @apply flex flex-row flex-wrap items-start justify-center gap-5 w-full max-md:flex-col;
+
+            & > .procurement-timeline-container{
+                @apply flex-6 flex flex-col items-start justify-start p-5 rounded-xl shadow-2xl w-full h-[450px];
+
+                & > .procurement-timeline-header {
+                    @apply flex flex-row items-center justify-start gap-3 w-full pb-3;
+                    border-bottom: 1px solid var(--text-gray);
+
+                    & > .title-container{
+                        @apply flex flex-col items-start justify-start;
+
+                        & > h2 {
+                            @apply text-2xl font-bold;
                         }
+
                         & > p {
-                            @apply text-xs;
+                            @apply text-sm;
                             color: var(--text-gray);
                         }
                     }
-                    & > span{
-                        @apply text-sm font-semibold text-green-500;
+                }
+                & > .content-container{
+                    @apply flex flex-col items-center justify-start py-1 gap-1 w-full h-full overflow-y-auto;
+                }
+            }
+            & > .ai-features-container{
+                @apply flex-5 flex flex-col items-center justify-start rounded-xl w-full min-w-80 h-[450px];
+                box-shadow: var(--red-shadow);
+                
+                & > .ai-features-header{
+                    @apply flex flex-row items-center justify-start gap-2 w-full pb-3 rounded-t-xl p-5;
+                    background: linear-gradient(90deg, var(--primary), var(--secondary));
+
+                    & > .title-container{
+                        @apply flex flex-col items-start justify-start;
+
+                        & > h2 {
+                            @apply text-base font-bold text-white;
+                        }
+
+                        & > p {
+                            @apply text-sm text-white;
+                        }
+                    }
+                }
+                & > .content-container{
+                    @apply flex flex-col items-center justify-evenly py-2 px-5 gap-2 w-full h-full overflow-y-auto;
+
+                    & > .alab-link{
+                        @apply flex flex-row items-center gap-1 p-3 rounded-xl font-bold text-white text-sm w-full justify-center
+                        transition-all duration-300 ease-in-out cursor-pointer;
+                        background: linear-gradient(90deg, var(--primary), var(--secondary));
+
+                        &:hover {
+                            @apply -translate-y-0.5;
+                            box-shadow: var(--red-shadow);
+                        }
+                    }
+                    & > .ai-features-content{
+                        @apply flex flex-row items-center justify-between gap-3 w-full border p-3 rounded-xl;
+                        border-color: var(--text-gray);
+
+                        & > .description{
+                            @apply flex-1;
+                            & > h3 {
+                                @apply text-sm font-semibold;
+                            }
+                            & > p {
+                                @apply text-xs;
+                                color: var(--text-gray);
+                            }
+                        }
+                        & > span{
+                            @apply text-sm font-semibold text-green-500;
+                        }
                     }
                 }
             }

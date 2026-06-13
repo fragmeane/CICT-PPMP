@@ -8,6 +8,7 @@ import ResetPassword from './pages/login/ResetPassword';
 import Dashboard from './pages/dashboard/Dashboard';
 import Nav from './components/nav/Nav';
 import Header from './components/header/Header';
+import PpmpMasterlist from './pages/masterlist/PpmpMasterlist';
 
 function App() {
 
@@ -41,6 +42,7 @@ function AppWrapper() {
             <Route path="/reset-password" element={<ResetPassword />} />
 
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/ppmp-master-list" element={<PpmpMasterlist />} />
         </Routes>
     </>
   )
