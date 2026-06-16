@@ -8,7 +8,7 @@ export default function PpmpMasterlist() {
         {icon: 'chart', title: 'Total Available Items', count: 189, color: 'blue'},
         {icon: 'clock', title: 'Total Pending Items', count: 12, color: 'yellow'},
         {icon: 'check', title: 'Total Fulfilled Items', count: 58, color: 'green'},
-        {icon: 'businessplan', title: 'Total Planned Price', count: 4300000, color: 'purple'},
+        {icon: 'businessplan', title: 'Total Planned Price', count: 4300000, color: 'royal-red'},
     ];
 
     interface PPMPItem {

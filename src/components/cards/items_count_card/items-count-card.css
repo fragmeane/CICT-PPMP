@@ -19,6 +19,9 @@
     &.gray {
         @apply bg-gradient-to-br from-gray-500/40 to-white text-gray-500 border-gray-500;
     }
+    &.royal-red {
+        @apply bg-gradient-to-br from-red-800/40 to-white text-red-800 border-red-800;
+    }
 
     & > .content{
         @apply flex flex-col items-start justify-center;
