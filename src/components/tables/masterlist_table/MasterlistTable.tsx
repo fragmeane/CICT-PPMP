@@ -1,5 +1,5 @@
 import '../table-design.css';
-import { IconListSearch,IconFileTypeXls,IconFilter,IconFileStack  } from '@tabler/icons-react';
+import { IconSearch ,IconFileTypeXls,IconFilter,IconFileStack  } from '@tabler/icons-react';
 
 export default function MasterlistTable({itemCount, unitCount, exportFunction, data}: {itemCount: number, unitCount: number, exportFunction?: () => void, data: any[]}) {
     return (
@@ -10,14 +10,12 @@ export default function MasterlistTable({itemCount, unitCount, exportFunction, d
                     <p><span>{itemCount}</span> Items • <span>{unitCount}</span> Units available for request</p>
                 </div>
                 <div className="search-container">
-                    <IconListSearch size={24} />
+                    <IconSearch size={24} />
                     <input type="text" placeholder="Search Items..." className="search-input" />
                 </div>
-                {exportFunction && (
-                    <button className="export-button" onClick={exportFunction}>
-                        <IconFileTypeXls size={24} /> Export Latest PPMP
-                    </button>
-                )}
+                <button className="export-button" onClick={exportFunction}>
+                    <IconFileTypeXls size={24} /> Export Latest PPMP
+                </button>
                 <div className="filter-container">
                     <IconFilter size={24} />
                     <select className="filter-select">
@@ -57,7 +55,7 @@ export default function MasterlistTable({itemCount, unitCount, exportFunction, d
                             <td>{item.priceCatalogue.toLocaleString()}</td>
                             <td>{item.totalPrice.toLocaleString()}</td>
                             <td colSpan={2}>
-                                <button className="action-button create">
+                                <button className="btn-solid blue">
                                     <IconFileStack size={18} /> Create PR ({item.availableQuantity} avail.)</button>
                             </td>
                         </tr>

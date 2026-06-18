@@ -9,6 +9,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Nav from './components/nav/Nav';
 import Header from './components/header/Header';
 import PpmpMasterlist from './pages/masterlist/PpmpMasterlist';
+import ProcurementMonitor from './pages/monitoring/ProcurementMonitor';
 
 function App() {
 
@@ -43,6 +44,7 @@ function AppWrapper() {
 
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/ppmp-master-list" element={<PpmpMasterlist />} />
+            <Route path="/procurement-monitor" element={<ProcurementMonitor />} />
         </Routes>
     </>
   )

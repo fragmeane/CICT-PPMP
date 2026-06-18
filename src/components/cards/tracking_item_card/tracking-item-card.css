@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+.tracking-item-card {
+    @apply flex flex-col items-center justify-center w-full bg-white rounded-xl shadow-xl p-5;
+
+    & > .status-tracker-container{
+        @apply flex flex-col items-center justify-start gap-3 w-full;
+
+        & > .item-name-price-container{
+            @apply flex flex-row items-center justify-start w-full cursor-pointer gap-2;
+
+            & > .chevron-icon {
+                @apply transition-transform duration-300 ease-in-out text-gray-500;
+
+                &.rotated {
+                    @apply rotate-90 text-blue-500;
+                }
+            }
+
+            & > .item-name {
+                @apply flex-1;
+                & > h3 {
+                    @apply text-sm font-semibold;
+                }
+                & > p {
+                    @apply text-xs;
+                    color: var(--text-gray);
+                }
+            }
+            & > p {
+                @apply text-sm font-bold;
+            }
+        }
+        & > .status-count-container {
+            @apply flex flex-row items-center justify-between w-full gap-2;
+            
+            & > .status-count-card {
+                @apply flex-1 flex flex-col items-center justify-center gap-1 py-2.5 rounded-xl;
+                background-color: color-mix(in srgb, var(--text-gray) 20%, transparent);
+                color: var(--text-gray);
+
+                & > .icon-count{
+                    @apply flex flex-row items-center gap-1 text-sm font-semibold;
+                    
+                    &.black {
+                        @apply text-black;
+                    }
+                    &.blue {
+                        @apply text-blue-500;
+                    }
+                    &.yellow {
+                        @apply text-yellow-500;
+                    }
+                    &.green {
+                        @apply text-green-500;
+                    }
+                }
+
+                & > p {
+                    @apply text-[0.625rem] font-semibold;
+                }
+            }
+        }
+        & > .status-tracker-container{
+            @apply flex flex-row items-center justify-start w-full;
+
+            & > hr {
+                @apply h-2 outline-none border-none;
+
+                &.available {
+                    @apply bg-blue-500;
+                }
+                &.pending {
+                    @apply bg-yellow-500;
+                }
+                &.fulfilled {
+                    @apply bg-green-500;
+                }
+                &:first-child {
+                    @apply rounded-l-xl;
+                }
+                &:last-child {
+                    @apply rounded-r-xl;
+                }
+            }
+        }
+        & > .legend-container{
+            @apply flex flex-row items-center justify-start gap-5 w-full;
+
+            & > p{
+                @apply flex flex-row items-center gap-1 text-xs font-bold;
+                
+                &:nth-child(1) {
+                    @apply text-blue-500;
+                }
+                &:nth-child(2) {
+                    @apply text-yellow-500;
+                }
+                &:nth-child(3) {
+                    @apply text-green-500;
+                }
+            }
+        }
+    }
+    & > .pr-history-container {
+        @apply flex flex-col items-center justify-start gap-3 w-full border-gray-300 h-0 overflow-hidden transition-all duration-300 ease-in-out;
+        
+        &.expanded {
+            @apply h-auto mt-5 border-t pt-5;
+
+
+        }
+
+        & > .header-pr-history {
+            @apply flex flex-row items-center justify-start gap-2 w-full;
+
+            & > h3 {
+                @apply text-sm font-semibold;
+                & > span {
+                    @apply text-xs font-light;
+                    color: var(--text-gray);
+                }
+            }
+        }
+
+        & > .pr-history-list-container {
+            @apply flex flex-col items-center justify-start gap-2 w-full;
+        }
+    }
+}
