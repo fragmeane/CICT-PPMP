@@ -1,7 +1,7 @@
 import './dashboard-procurement-card.css';
 import { IconClockX, IconFileStack, IconClockCheck, IconTransform, IconCloudUpload, IconClock, IconClockCancel } from '@tabler/icons-react';
 
-export default function DashboardProcurementCard({icon, title, description, date, value}: {icon?: string, title: string, description: string, date: string, value?: number}) {
+export default function DashboardProcurementCard({icon, title, description, date, value, userFullName}: {icon?: string, title: string, description: string, date: string, value?: number, userFullName?: string}) {
     const color = (icon: string) => {
         switch(icon) {
             case 'rejected':
@@ -49,6 +49,7 @@ export default function DashboardProcurementCard({icon, title, description, date
                     <span>{date}</span>
                     {value !== undefined && <p className="value">PHP {value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>}
                 </div>
+                <p className="user-name">Made by: {userFullName}</p>
             </div>
         </div>
     )

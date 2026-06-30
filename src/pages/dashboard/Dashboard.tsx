@@ -117,88 +117,106 @@ export default function Dashboard(){
                             title="Rejected PR" 
                             description="Purchase requests that have been rejected" 
                             date="2023-10-15" 
-                            value={20000}/>
+                            value={20000}
+                            userFullName="John Doe"
+                            />
                         <DashboardProcurementCard 
                             icon="upload"
                             title="Uploaded PR" 
                             description="Purchase requests that have been uploaded" 
-                            date="2023-10-15" />
+                            date="2023-10-15" 
+                            userFullName="John Doe"
+                            />
                         <DashboardProcurementCard 
                             icon="approved"
                             title="Purchase Request" 
                             description="Purchase request  of 10 SSD is requested" 
                             date="2023-10-15" 
-                            value={50000}/>
+                            value={50000}
+                            userFullName="John Doe"
+                            />
                             <DashboardProcurementCard 
                             icon="pr"
                             title="Purchase Request" 
                             description="Purchase request  of 10 SSD is requested" 
                             date="2023-10-15" 
-                            value={50000}/>
+                            value={50000}
+                            userFullName="John Doe"/>
                             <DashboardProcurementCard 
                             icon="reallocate"
                             title="Purchase Request" 
                             description="Purchase request  of 10 SSD is requested" 
                             date="2023-10-15" 
-                            value={50000}/>
+                            value={50000}
+                            userFullName="John Doe"/>
                             <DashboardProcurementCard 
                             icon="pr"
                             title="Purchase Request" 
                             description="Purchase request  of 10 SSD is requested" 
                             date="2023-10-15" 
-                            value={50000}/>
+                            value={50000}
+                            userFullName="John Doe"/>
                             <DashboardProcurementCard 
                             icon="pr"
                             title="Purchase Request" 
                             description="Purchase request  of 10 SSD is requested" 
                             date="2023-10-15" 
-                            value={50000}/>
+                            value={50000}
+                            userFullName="John Doe"/>
                             <DashboardProcurementCard 
                             icon="upload"
                             title="Purchase Request" 
                             description="Purchase request  of 10 SSD is requested" 
                             date="2023-10-15" 
-                            value={50000}/>
+                            value={50000}
+                            userFullName="John Doe"/>
                             <DashboardProcurementCard 
                             icon="pr"
                             title="Purchase Request" 
                             description="Purchase request  of 10 SSD is requested" 
                             date="2023-10-15" 
-                            value={50000}/>
+                            value={50000}
+                            userFullName="John Doe"/>
                             <DashboardProcurementCard 
                             icon="pr"
                             title="Purchase Request" 
                             description="Purchase request  of 10 SSD is requested" 
                             date="2023-10-15" 
-                            value={50000}/>
+                            value={50000}
+                            userFullName="John Doe"/>
                             <DashboardProcurementCard 
                             icon="pr"
                             title="Purchase Request" 
                             description="Purchase request  of 10 SSD is requested" 
                             date="2023-10-15" 
-                            value={50000}/>
+                            value={50000}
+                            userFullName="John Doe"/>
                             <DashboardProcurementCard 
                             icon="arrived"
                             title="Purchase Request" 
                             description="Purchase request  of 10 SSD is requested" 
                             date="2023-10-15" 
-                            value={50000}/>
+                            value={50000}
+                            userFullName="John Doe"/>
                             <DashboardProcurementCard 
                             icon="rejected"
                             title="Purchase Request" 
                             description="Purchase request  of 10 SSD is requested" 
                             date="2023-10-15" 
-                            value={50000}/>
+                            value={50000}
+                            userFullName="John Doe"/>
                             <DashboardProcurementCard 
                             icon="cancel"
                             title="Purchase Request" 
                             description="Purchase request  of 10 SSD is requested" 
                             date="2023-10-15" 
-                            value={50000}/>
+                            value={50000}
+                            userFullName="John Doe"/>
                             <DashboardProcurementCard
                             title="Purchase Request" 
                             description="Purchase request  of 10 SSD is requested" 
-                            date="2023-10-15"/>
+                            date="2023-10-15"
+                            userFullName="John Doe"/>
                     </div>
                 </div>
 
