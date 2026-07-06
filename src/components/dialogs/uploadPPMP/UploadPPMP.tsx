@@ -79,7 +79,7 @@ export default function UploadPPMP({ isOpen, onClose }: UploadPPMPProps) {
     }
 
     return (
-        <dialog ref={dialogRef} onCancel={handleCancel} className="upload-ppmp dialog">
+        <dialog ref={dialogRef} onCancel={handleCancel} className="upload-ppmp">
             <div className="header">
                 <div className="title">
                     <div className="icon green">
@@ -278,16 +278,7 @@ export default function UploadPPMP({ isOpen, onClose }: UploadPPMPProps) {
                         <IconArrowNarrowRightDashed size={18} color="white"/>
                     </button>
                 )}
-                {/*mapColumnsStep === "current" && selectedColumnMappings.itemName && selectedColumnMappings.unit && selectedColumnMappings.totalQuantity && selectedColumnMappings.pricePerUnit && selectedColumnMappings.rowStart && (
-                    <button className="btn-solid green" onClick={() => {
-                        setMapColumnsStep("done");
-                        setPreviewImportStep("current");
-                    }}>
-                        Preview Data
-                        <IconArrowNarrowRightDashed size={18} color="white"/>
-                    </button>
-                )*/}
-                {mapColumnsStep === "current" && (
+                {mapColumnsStep === "current" && selectedColumnMappings.itemName && selectedColumnMappings.unit && selectedColumnMappings.totalQuantity && selectedColumnMappings.pricePerUnit && selectedColumnMappings.rowStart && (
                     <button className="btn-solid green" onClick={() => {
                         setMapColumnsStep("done");
                         setPreviewImportStep("current");

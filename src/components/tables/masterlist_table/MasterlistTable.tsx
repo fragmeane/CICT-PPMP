@@ -1,7 +1,12 @@
+import { useState } from 'react';
+import CreatePR from '../../dialogs/create_PR/CreatePR';
 import '../table-design.css';
-import { IconSearch ,IconFileTypeXls,IconFilter,IconFileStack  } from '@tabler/icons-react';
+import { IconSearch, IconFileTypeXls, IconFilter, IconFileStack } from '@tabler/icons-react';
 
-export default function MasterlistTable({itemCount, unitCount, exportFunction, data}: {itemCount: number, unitCount: number, exportFunction?: () => void, data: any[]}) {
+export default function MasterlistTable({ itemCount, unitCount, exportFunction, data }: { itemCount: number, unitCount: number, exportFunction?: () => void, data: any[] }) {
+
+    const [openDialogIndex, setOpenDialogIndex] = useState<number | null>(null);
+
     return (
         <div className="table-container masterlist">
             <div className="table-title-container">
@@ -33,39 +38,57 @@ export default function MasterlistTable({itemCount, unitCount, exportFunction, d
                     <thead>
                         <tr>
                             <th><h3>Item Name</h3><p>General Description</p></th>
-                        <th><h3>Unit</h3><p>Measurement</p></th>
-                        <th><h3>Planned</h3><p>Total Quantity</p></th>
-                        <th><h3>Available</h3><p>Free for Lieu Pool</p></th>
-                        <th><h3>Pending</h3><p>Under PR</p></th>
-                        <th><h3>Fulfilled</h3><p>Arrived Items</p></th>
-                        <th><h3>Price Catalog</h3><p>Per Unit (PHP)</p></th>
-                        <th><h3>Total Price</h3><p>Overall Price (PHP)</p></th>
-                        <th colSpan={2}><h3>Action</h3><p>Available Actions</p></th>
-                    </tr>
-                </thead>
-                <tbody> 
-                    {data.map((item, index) => (
-                        <tr key={index}>
-                            <td>{item.itemDescription}</td>
-                            <td>{item.unitMeasurement}</td>
-                            <td>{item.plannedQuantity}</td>
-                            <td>{item.availableQuantity}</td>
-                            <td>{item.pendingQuantity}</td>
-                            <td>{item.fulfilledQuantity}</td>
-                            <td>{item.priceCatalogue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                            <td>{item.totalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                            <td>
-                                {item.availableQuantity > 0 ? (
-                                    <button className="btn-solid blue">
-                                        <IconFileStack size={18} /> Create PR ({item.availableQuantity} avail.)</button>
-                                ) : (
-                                    <button className="btn-solid blue" disabled>
-                                        <IconFileStack size={18} /> Create PR ({item.availableQuantity} avail.)</button>
-                                )}
-                            </td>
+                            <th><h3>Unit</h3><p>Measurement</p></th>
+                            <th><h3>Planned</h3><p>Total Quantity</p></th>
+                            <th><h3>Available</h3><p>Free for Lieu Pool</p></th>
+                            <th><h3>Pending</h3><p>Under PR</p></th>
+                            <th><h3>Fulfilled</h3><p>Arrived Items</p></th>
+                            <th><h3>Price Catalog</h3><p>Per Unit (PHP)</p></th>
+                            <th><h3>Total Price</h3><p>Overall Price (PHP)</p></th>
+                            <th colSpan={2}><h3>Action</h3><p>Available Actions</p></th>
                         </tr>
-                    ))}
-                </tbody>
+                    </thead>
+                    <tbody>
+                        {data.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.itemDescription}</td>
+                                <td>{item.unitMeasurement}</td>
+                                <td>{item.plannedQuantity}</td>
+                                <td>{item.availableQuantity}</td>
+                                <td>{item.pendingQuantity}</td>
+                                <td>{item.fulfilledQuantity}</td>
+                                <td>{item.priceCatalogue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td>{item.totalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td>
+                                    {item.availableQuantity > 0 ? (
+                                        <>
+                                            <button 
+                                                className="btn-solid blue" 
+                                                onClick={() => setOpenDialogIndex(index)}
+                                            >
+                                                <IconFileStack size={18} /> Create PR ({item.availableQuantity} avail.)
+                                            </button>
+                                            
+                                            <CreatePR 
+                                                key={index} 
+                                                itemName={item.itemDescription} 
+                                                availableQuantity={item.availableQuantity} 
+                                                pendingQuantity={item.pendingQuantity} 
+                                                fulfilledQuantity={item.fulfilledQuantity} 
+                                                priceCatalogue={item.priceCatalogue}
+                                                isOpen={openDialogIndex === index} 
+                                                onClose={() => setOpenDialogIndex(null)}
+                                            />
+                                        </>
+                                    ) : (
+                                        <button className="btn-solid blue" disabled>
+                                            <IconFileStack size={18} /> Create PR ({item.availableQuantity} avail.)
+                                        </button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
                 </table>
             </div>
         </div>

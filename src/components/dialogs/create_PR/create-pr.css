@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+.create-pr{
+    @apply fixed flex-col w-3xl p-6 rounded-lg bg-white shadow-lg left-0 right-0 top-1/2 -translate-y-1/2 mx-auto;
+    & > .header{
+        @apply flex flex-row justify-start items-center mb-4 gap-2;
+        & > .title{
+            @apply flex flex-col items-start justify-center;
+            & > h3{
+                @apply text-sm font-semibold;
+            }
+            & > p{
+                @apply text-xs font-normal;
+                color: var(--text-gray);
+            }
+        }
+    }
+    & > .item-name{
+        @apply w-full text-start text-sm font-semibold mb-4;
+    }
+    & > .status-count-container {
+        @apply flex flex-row items-center justify-between w-full gap-2;
+        
+        & > .status-count-card {
+            @apply flex-1 flex flex-col items-center justify-center gap-1 py-2.5 rounded-xl mb-4;
+            background-color: color-mix(in srgb, var(--text-gray) 20%, transparent);
+            color: var(--text-gray);
+
+            & > .icon-count{
+                @apply flex flex-row items-center gap-1 text-sm font-semibold;
+                
+                &.black {
+                    @apply text-black;
+                }
+                &.blue {
+                    @apply text-blue-500;
+                }
+                &.yellow {
+                    @apply text-yellow-500;
+                }
+                &.green {
+                    @apply text-green-500;
+                }
+            }
+
+            & > p {
+                @apply text-[0.625rem] font-semibold;
+            }
+        }
+    }
+    & > .input-group{
+        @apply flex flex-row items-center justify-center w-full gap-4 mb-4;
+    }
+    & > .total-price{
+        @apply flex flex-row items-center justify-between w-full gap-2 mb-4 border border-blue-500 bg-blue-50 rounded-lg p-3 mt-2;
+        & > p{
+            @apply text-sm font-semibold;
+            color: var(--text-gray);
+        }
+        & > h4{
+            @apply text-sm font-semibold text-blue-500;
+        }
+    }
+    & > .action-btns{
+        @apply flex flex-row items-center justify-end w-full gap-2;
+        & > .cancel-btn-container{
+            @apply flex-1;
+        }
+    }
+}

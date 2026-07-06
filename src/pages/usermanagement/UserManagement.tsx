@@ -15,7 +15,7 @@ export default function UserManagement() {
     }
 
     function handleFullNameChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setFullName(e.target.value);
+        setFullName("");
         const errorMessage = document.getElementById('fullnameError');
         
         if(e.target.value.trim() === '') {
@@ -27,7 +27,7 @@ export default function UserManagement() {
     }
 
     function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setEmail(e.target.value);
+        setEmail("");
         const errorMessage = document.getElementById('emailError');
 
         if(e.target.value.trim() === '') {
@@ -41,7 +41,7 @@ export default function UserManagement() {
     }
 
     function handleTemporaryPasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setTemporaryPassword(e.target.value);
+        setTemporaryPassword("");
         const errorMessage = document.getElementById('temporaryPasswordError');
 
         if(e.target.value.trim() === '') {

@@ -3,8 +3,19 @@ import PRHistoryCard from "../pr_history_card/PRHistoryCard";
 import "./tracking-item-card.css";
 import { IconChevronRight, IconPackage, IconChartHistogram, IconClock, IconCircleDashedCheck, IconCircleFilled, IconFileStack } from '@tabler/icons-react';
 
-export default function TrackingItemCard({itemName, unitCount, priceCatalog, plannedQuantity, availableQuantity, pendingQuantity, fulfilledQuantity, prHistory, prHistoryCount}: 
-        {itemName: string, unitCount: number, priceCatalog: number, plannedQuantity: number, availableQuantity: number, pendingQuantity: number, fulfilledQuantity: number, prHistory: any[], prHistoryCount: number}) {
+interface TrackingItemCardProps {
+    itemName: string;
+    unitCount: number;
+    priceCatalog: number;
+    plannedQuantity: number;
+    availableQuantity: number;
+    pendingQuantity: number;
+    fulfilledQuantity: number;
+    prHistory: any[];
+    prHistoryCount: number;
+}
+
+export default function TrackingItemCard({itemName, unitCount, priceCatalog, plannedQuantity, availableQuantity, pendingQuantity, fulfilledQuantity, prHistory, prHistoryCount}: TrackingItemCardProps) {
 
         const availablePercentage: number = (availableQuantity / plannedQuantity) * 100;
         const pendingPercentage: number = (pendingQuantity / plannedQuantity) * 100;
@@ -23,9 +34,9 @@ export default function TrackingItemCard({itemName, unitCount, priceCatalog, pla
                     <IconChevronRight size={24} className={`chevron-icon ${togglePRHistory ? 'rotated' : ''}`}/>
                     <div className="item-name">
                         <h3>{itemName}</h3>
-                        <p>{unitCount} units • PHP {priceCatalog.toLocaleString()}</p>
+                        <p>{unitCount} units • PHP {priceCatalog.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                     </div>
-                    <p>PHP {priceCatalog.toLocaleString()}</p>
+                    <p>PHP {priceCatalog.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 </div>
                 <div className="status-count-container">
                     <div className="status-count-card"><div className="icon-count black"><IconPackage size={24}/> <p>{plannedQuantity}</p></div><p>PLANNED QTY</p></div>
@@ -70,6 +81,8 @@ export default function TrackingItemCard({itemName, unitCount, priceCatalog, pla
                             key={index}
                             prNumber={pr.prNumber}
                             quantity={pr.quantity}
+                            itemName={itemName}
+                            priceCatalog={priceCatalog}
                             specifications={pr.specifications}
                             status={pr.status}
                             dateRequested={pr.dateRequested}

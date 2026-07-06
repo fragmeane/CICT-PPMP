@@ -22,7 +22,7 @@ export default function Settings() {
     const [specialCharacter, setSpecialCharacter] = useState<boolean>(false);
 
     function handleFullNameChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setFullName(e.target.value);
+        setFullName("");
         const errorMessage = document.getElementById('fullnameError');
 
         if(e.target.value.trim() === '') {
@@ -36,7 +36,7 @@ export default function Settings() {
 
     function handleNewPasswordChange(e : React.ChangeEvent<HTMLInputElement>){
         const temp: string = e.target.value;
-        setNewPassword(temp);
+        setNewPassword("");
         const errorMessage = document.getElementById('confirmNewPasswordError');
 
         if(confirmNewPassword && temp !== confirmNewPassword){
