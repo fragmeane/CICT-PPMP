@@ -2,6 +2,8 @@ import { useState } from "react";
 import PrintPR from "../../dialogs/print_PR/PrintPR";
 import "./pr-history-card.css";
 import { IconClock, IconCircleDashedCheck, IconPrinter, IconChecklist, IconCancel } from '@tabler/icons-react';
+import {notify, confirm} from "../../dialogs/global_dialog/DialogService";
+import { toast } from "../../toast/ToastService";
 
 interface PRHistoryCardProps {
     prNumber: string;
@@ -16,6 +18,23 @@ interface PRHistoryCardProps {
 
 export default function PRHistoryCard({prNumber, quantity, itemName, priceCatalog, specifications, status, dateRequested, dateFulfilled}: PRHistoryCardProps) {
     const [isPrintPROpen, setPrintPROpen] = useState(false);
+
+    function handleArrivedClick() {
+        confirm("Arrive", "Are you sure you want to mark this PR as arrived?", "info", "Yes Mark as Arrived")
+            .then((confirmed) => {
+                if (confirmed) {
+                    toast.success("PR marked as arrived successfully!");
+                }
+            });
+    }
+    function handleCancelClick() {
+        confirm("Cancel", "Are you sure you want to cancel this PR?", "warning", "Yes Cancel PR")
+            .then((confirmed) => {
+                if (confirmed) {
+                    toast.error("PR cancelled successfully!");
+                } 
+            });
+    }
     return (    
         <div className="pr-history-card">
             <div className={`icon ${status === "Pending" ? "yellow" : status === "Fulfilled" ? "green" : status === "Cancelled" ? "red" : ""}`}>
@@ -40,11 +59,11 @@ export default function PRHistoryCard({prNumber, quantity, itemName, priceCatalo
                                 <IconPrinter size={16} />
                                 Print Document
                             </button>
-                            <button className="btn-solid green">
+                            <button className="btn-solid green" onClick={handleArrivedClick}>
                                 <IconChecklist size={16} />
                                 Arrived
                             </button>
-                            <button className="btn-solid red">
+                            <button className="btn-solid red" onClick={handleCancelClick}>
                                 <IconCancel size={16} />
                                 Cancel
                             </button>
