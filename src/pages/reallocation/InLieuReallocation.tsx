@@ -24,10 +24,19 @@ export default function InLieuReallocation() {
     const requiredBudget = newItemsArray.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
 
     interface SelectedLieuItem {
-        id: string;
+        id: number;
         itemDescription: string;
         unitMeasurement: string;
         reduceQuantity: number;
+        priceCatalogue: number;
+    }
+
+    interface PPMPData {
+        id: number;
+        itemDescription: string;
+        unitMeasurement: string;
+        plannedQuantity: number;
+        availableQuantity: number;
         priceCatalogue: number;
     }
 
@@ -65,7 +74,7 @@ export default function InLieuReallocation() {
         }
     };
 
-    const handleUpdateLieuQuantity = (id: string, quantity: number) => {
+    const handleUpdateLieuQuantity = (id: number, quantity: number) => {
         setSelectedLieuItems(prev => prev.map(item => 
             item.id === id ? { ...item, reduceQuantity: quantity } : item
         ));
@@ -82,11 +91,11 @@ export default function InLieuReallocation() {
         console.log("Full JSON Payload ready for database:", payload);
     };
 
-    const mockPPMPData = [
-        { id: "item-001", itemDescription: "Solid State Drive (1TB NVMe Gen4)", unitMeasurement: "piece", plannedQuantity: 10, availableQuantity: 9, pendingQuantity: 1, fulfilledQuantity: 0, priceCatalogue: 4500.00, totalPrice: 45000.00 },
-        { id: "item-002", itemDescription: "LED Monitor (24-inch IPS, 144Hz)", unitMeasurement: "unit", plannedQuantity: 5, availableQuantity: 5, pendingQuantity: 0, fulfilledQuantity: 0, priceCatalogue: 8500.00, totalPrice: 42500.00 },
-        { id: "item-003", itemDescription: "Mechanical Keyboard (Hot-swappable)", unitMeasurement: "piece", plannedQuantity: 15, availableQuantity: 5, pendingQuantity: 10, fulfilledQuantity: 0, priceCatalogue: 2200.00, totalPrice: 33000.00 },
-        { id: "item-004", itemDescription: "Mechanical Keyboard (Hot-swappable)", unitMeasurement: "piece", plannedQuantity: 15, availableQuantity: 0, pendingQuantity: 10, fulfilledQuantity: 0, priceCatalogue: 2200.00, totalPrice: 33000.00 }
+    const mockPPMPData: PPMPData[] = [
+        { id: 1, itemDescription: "Solid State Drive (1TB NVMe Gen4)", unitMeasurement: "piece", plannedQuantity: 10, availableQuantity: 9, priceCatalogue: 4500.00},
+        { id: 2, itemDescription: "LED Monitor (24-inch IPS, 144Hz)", unitMeasurement: "unit", plannedQuantity: 5, availableQuantity: 5, priceCatalogue: 8500.00},
+        { id: 3, itemDescription: "Mechanical Keyboard (Hot-swappable)", unitMeasurement: "piece", plannedQuantity: 15, availableQuantity: 5, priceCatalogue: 2200.00},
+        { id: 4, itemDescription: "Mechanical Keyboard (Hot-swappable)", unitMeasurement: "piece", plannedQuantity: 15, availableQuantity: 0, priceCatalogue: 2200.00}
     ];
 
     return (

@@ -3,7 +3,7 @@ import { IconCircle, IconCircleCheckFilled } from '@tabler/icons-react';
 import { useState } from "react";
 
 interface LieuItemCardProps {
-    id: string;
+    id: number;
     itemName: string;
     unitMeasurement: string;
     priceCatalog: number;
@@ -12,7 +12,7 @@ interface LieuItemCardProps {
     isSelected: boolean;
     reduceQuantity: number;
     onToggle: () => void;
-    onQuantityChange: (id: string, qty: number) => void;
+    onQuantityChange: (id: number, qty: number) => void;
 }
 
 export default function LieuItemCard({

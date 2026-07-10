@@ -58,7 +58,7 @@ export default function MasterlistTable({ itemCount, unitCount, exportFunction, 
                                 <td>{item.pendingQuantity}</td>
                                 <td>{item.fulfilledQuantity}</td>
                                 <td>{item.priceCatalogue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                <td>{item.totalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td>{(item.plannedQuantity * item.priceCatalogue).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 <td>
                                     {item.availableQuantity > 0 ? (
                                         <>

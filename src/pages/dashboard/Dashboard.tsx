@@ -237,7 +237,6 @@ export default function Dashboard(){
                         </div>
                     </div>
                 </div>
-                
             </LoadingWrapper>
         </main>
     )

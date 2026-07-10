@@ -8,6 +8,7 @@ import PpmpMasterlistSkeleton from '../../components/skeleton/skeleton_pages/Ppm
 export default function PpmpMasterlist() {
 
     const [isLoading, setIsLoading] = useState(true);
+    const totalPlannedItems = 258;
     
     useEffect(() => {
         const loadDashboardData = async () => {
@@ -22,7 +23,7 @@ export default function PpmpMasterlist() {
     }, []);
 
     const ItemsCountCardData: {icon: string, title: string, count: number, color: string}[] = [
-        {icon: 'package', title: 'Total Items in Planned', count: 256, color: 'gray'},
+        {icon: 'package', title: 'Total Items in Planned', count: totalPlannedItems, color: 'gray'},
         {icon: 'chart', title: 'Total Available Items', count: 189, color: 'blue'},
         {icon: 'clock', title: 'Total Pending Items', count: 12, color: 'yellow'},
         {icon: 'check', title: 'Total Fulfilled Items', count: 58, color: 'green'},
@@ -30,20 +31,19 @@ export default function PpmpMasterlist() {
     ];
 
     interface PPMPItem {
-    id: string;
-    itemDescription: string;
-    unitMeasurement: string;
-    plannedQuantity: number;
-    availableQuantity: number;
-    pendingQuantity: number;
-    fulfilledQuantity: number;
-    priceCatalogue: number;
-    totalPrice: number;
+        id: number;
+        itemDescription: string;
+        unitMeasurement: string;
+        plannedQuantity: number;
+        availableQuantity: number;
+        pendingQuantity: number;
+        fulfilledQuantity: number;
+        priceCatalogue: number;
     }
     
     const mockPPMPData: PPMPItem[] = [
     {
-        id: "item-001",
+        id: 1,
         itemDescription: "Solid State Drive (1TB NVMe Gen4)",
         unitMeasurement: "piece",
         plannedQuantity: 10,
@@ -51,10 +51,9 @@ export default function PpmpMasterlist() {
         pendingQuantity: 1,
         fulfilledQuantity: 0,
         priceCatalogue: 4500.00,
-        totalPrice: 45000.00,
     },
     {
-        id: "item-002",
+        id: 2,
         itemDescription: "LED Monitor (24-inch IPS, 144Hz)",
         unitMeasurement: "unit",
         plannedQuantity: 5,
@@ -62,10 +61,9 @@ export default function PpmpMasterlist() {
         pendingQuantity: 0,
         fulfilledQuantity: 0,
         priceCatalogue: 8500.00,
-        totalPrice: 42500.00,
     },
     {
-        id: "item-003",
+        id: 3,
         itemDescription: "Mechanical Keyboard (Hot-swappable)",
         unitMeasurement: "piece",
         plannedQuantity: 15,
@@ -73,10 +71,9 @@ export default function PpmpMasterlist() {
         pendingQuantity: 10,
         fulfilledQuantity: 0,
         priceCatalogue: 2200.00,
-        totalPrice: 33000.00,
     },
     {
-        id: "item-004",
+        id: 4,
         itemDescription: "CAT6 UTP Network Cable (305m Roll)",
         unitMeasurement: "roll",
         plannedQuantity: 2,
@@ -84,10 +81,9 @@ export default function PpmpMasterlist() {
         pendingQuantity: 0,
         fulfilledQuantity: 2,
         priceCatalogue: 5800.00,
-        totalPrice: 11600.00,
     },
     {
-        id: "item-005",
+        id: 5,
         itemDescription: "Wireless Access Point (WiFi 6 Dual Band)",
         unitMeasurement: "unit",
         plannedQuantity: 3,
@@ -95,10 +91,9 @@ export default function PpmpMasterlist() {
         pendingQuantity: 0,
         fulfilledQuantity: 3,
         priceCatalogue: 4200.00,
-        totalPrice: 12600.00,
     },
     {
-        id: "item-006",
+        id: 6,
         itemDescription: "USB Web Camera (1080p Full HD)",
         unitMeasurement: "piece",
         plannedQuantity: 8,
@@ -106,10 +101,9 @@ export default function PpmpMasterlist() {
         pendingQuantity: 0,
         fulfilledQuantity: 8,
         priceCatalogue: 1800.00,
-        totalPrice: 14400.00,
     },
     {
-        id: "item-007",
+        id: 7,
         itemDescription: "RJ45 Modular Plugs (100 pcs per box)",
         unitMeasurement: "box",
         plannedQuantity: 10,
@@ -117,10 +111,9 @@ export default function PpmpMasterlist() {
         pendingQuantity: 0,
         fulfilledQuantity: 8,
         priceCatalogue: 450.00,
-        totalPrice: 4500.00,
     },
     {
-        id: "item-008",
+        id: 8,
         itemDescription: "DDR4 Laptop RAM (16GB 3200MHz)",
         unitMeasurement: "piece",
         plannedQuantity: 12,
@@ -128,10 +121,9 @@ export default function PpmpMasterlist() {
         pendingQuantity: 0,
         fulfilledQuantity: 5,
         priceCatalogue: 2800.00,
-        totalPrice: 33600.00,
     },
     {
-        id: "item-009",
+        id: 9,
         itemDescription: "Uninterruptible Power Supply (650VA)",
         unitMeasurement: "unit",
         plannedQuantity: 6,
@@ -139,7 +131,6 @@ export default function PpmpMasterlist() {
         pendingQuantity: 0,
         fulfilledQuantity: 0,
         priceCatalogue: 2500.00,
-        totalPrice: 15000.00,
     }
     ];
 

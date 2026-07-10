@@ -6,7 +6,7 @@ import {notify, confirm} from "../../dialogs/global_dialog/DialogService";
 import { toast } from "../../toast/ToastService";
 
 interface PRHistoryCardProps {
-    prNumber: string;
+    id: number;
     quantity: number;
     itemName: string;
     specifications: string;
@@ -16,7 +16,7 @@ interface PRHistoryCardProps {
     dateFulfilled?: string | null;
 }
 
-export default function PRHistoryCard({prNumber, quantity, itemName, priceCatalog, specifications, status, dateRequested, dateFulfilled}: PRHistoryCardProps) {
+export default function PRHistoryCard({id, quantity, itemName, priceCatalog, specifications, status, dateRequested, dateFulfilled}: PRHistoryCardProps) {
     const [isPrintPROpen, setPrintPROpen] = useState(false);
 
     function handleArrivedClick() {
@@ -44,7 +44,7 @@ export default function PRHistoryCard({prNumber, quantity, itemName, priceCatalo
             </div>
             <div className="info">
                 <div className="pr-number-status-container">
-                    <p className="pr-number">{prNumber}</p>
+                    <p className="pr-number">PR-00{id}</p>
                     <p className={`status ${status.toLowerCase()}`}>{status}</p>
                 </div>
                 <p className="specifications">{itemName} • {specifications}</p>
@@ -69,7 +69,7 @@ export default function PRHistoryCard({prNumber, quantity, itemName, priceCatalo
                             </button>
                         </div>
                         <PrintPR
-                            prId={prNumber}
+                            id={id}
                             itemName={itemName}
                             itemDescription={specifications}
                             quantity={quantity}

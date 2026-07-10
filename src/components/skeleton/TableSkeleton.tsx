@@ -122,7 +122,7 @@ export default function TableSkeleton() {
                     <div className="h-3 bg-gray-300 w-full rounded"></div>
                     <div className="h-3 bg-gray-300 w-full rounded"></div>
                     <div className="h-8 bg-gray-300 w-full rounded"></div>
-                </div>
+                </div>                                                               
             </div>
         </div>
     )

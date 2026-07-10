@@ -4,8 +4,8 @@ import "./tracking-item-card.css";
 import { IconChevronRight, IconPackage, IconChartHistogram, IconClock, IconCircleDashedCheck, IconCircleFilled, IconFileStack } from '@tabler/icons-react';
 
 interface TrackingItemCardProps {
+    id: number;
     itemName: string;
-    unitCount: number;
     priceCatalog: number;
     plannedQuantity: number;
     availableQuantity: number;
@@ -15,7 +15,7 @@ interface TrackingItemCardProps {
     prHistoryCount: number;
 }
 
-export default function TrackingItemCard({itemName, unitCount, priceCatalog, plannedQuantity, availableQuantity, pendingQuantity, fulfilledQuantity, prHistory, prHistoryCount}: TrackingItemCardProps) {
+export default function TrackingItemCard({id, itemName, priceCatalog, plannedQuantity, availableQuantity, pendingQuantity, fulfilledQuantity, prHistory, prHistoryCount}: TrackingItemCardProps) {
 
         const availablePercentage: number = (availableQuantity / plannedQuantity) * 100;
         const pendingPercentage: number = (pendingQuantity / plannedQuantity) * 100;
@@ -34,7 +34,7 @@ export default function TrackingItemCard({itemName, unitCount, priceCatalog, pla
                     <IconChevronRight size={24} className={`chevron-icon ${togglePRHistory ? 'rotated' : ''}`}/>
                     <div className="item-name">
                         <h3>{itemName}</h3>
-                        <p>{unitCount} units • PHP {priceCatalog.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                        <p>{plannedQuantity} units • PHP {priceCatalog.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                     </div>
                     <p>PHP {priceCatalog.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 </div>
@@ -79,7 +79,7 @@ export default function TrackingItemCard({itemName, unitCount, priceCatalog, pla
                     {prHistory.map((pr, index) => (
                         <PRHistoryCard
                             key={index}
-                            prNumber={pr.prNumber}
+                            id={pr.id}
                             quantity={pr.quantity}
                             itemName={itemName}
                             priceCatalog={priceCatalog}
