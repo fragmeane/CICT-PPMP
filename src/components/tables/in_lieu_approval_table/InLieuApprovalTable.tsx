@@ -1,7 +1,12 @@
 import "../table-design.css";
-import { IconSearch ,IconFilter,IconFileStack,IconEye,IconChecklist,IconX } from '@tabler/icons-react';
+import { useState } from "react";
+import { IconSearch ,IconFilter,IconFileStack,IconChecklist,IconX } from '@tabler/icons-react';
+import ViewInLieu from "../../dialogs/view_in_lieu/ViewInLieu";
 
 export default function InLieuApprovalTable({data}: {data: any[]}) {
+
+    const [openDialogIndex, setOpenDialogIndex] = useState<number | null>(null);
+
     return (
         <div className="table-container approvals">
             <div className="table-title-container">
@@ -42,7 +47,7 @@ export default function InLieuApprovalTable({data}: {data: any[]}) {
                     {data.map((item, index) => (
                         <tr key={index}>
                             <td>{item.requestDate}</td>
-                            <td>{item.staffName}</td>
+                            <td>{item.requestedBy}</td>
                             <td>
                                 <div className="original-items">
                                     {item.originalItems.map((i: any) => (
@@ -77,16 +82,32 @@ export default function InLieuApprovalTable({data}: {data: any[]}) {
                             </td>
                             <td>
                                 <div className="button-container">
-                                    <button className="btn-solid blue">
+                                    <button className="btn-solid blue" onClick={() => setOpenDialogIndex(index)}>
                                         <IconFileStack size={18} /> View
                                     </button>
-                                    <button className="btn-solid green">
-                                        <IconChecklist size={18} /> Approve
-                                    </button>
-                                    <button className="btn-solid red">
-                                        <IconX size={18} /> Reject
-                                    </button>
+                                    {item.status.toLowerCase() === "pending" && (
+                                        <>
+                                            <button className="btn-solid green">
+                                                <IconChecklist size={18} /> Approve
+                                            </button>
+                                            <button className="btn-solid red">
+                                                <IconX size={18} /> Reject
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
+                                <ViewInLieu
+                                    key={item.id}
+                                    inLieuId={item.id}
+                                    requestDate={item.requestDate}
+                                    requestedBy={item.requestedBy}
+                                    originalItems={item.originalItems}
+                                    proposedItems={item.proposedItems}
+                                    budgetImpact={item.budgetImpact}
+                                    status={item.status}
+                                    isOpen={openDialogIndex === index} 
+                                    onClose={() => setOpenDialogIndex(null)}
+                                />
                             </td>
                         </tr>
                     ))}

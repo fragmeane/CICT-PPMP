@@ -6,6 +6,7 @@ import DashboardProcurementCard from '../../components/cards/dashboard_procureme
 import alab from '../../assets/icons/alab.svg';
 import { Link } from 'react-router';
 import LoadingWrapper from '../../components/wrappers/loading wrapper/LoadingWrapper';
+import DashboardSkeleton from '../../components/skeleton/skeleton_pages/DashboardSkeleton';
 
 export default function Dashboard(){
     const [isLoading, setIsLoading] = useState(true);
@@ -88,7 +89,7 @@ export default function Dashboard(){
 
     return (
         <main className="page-container dashboard">
-            <LoadingWrapper isLoading={isLoading}>
+            <LoadingWrapper isLoading={isLoading} skeleton={<DashboardSkeleton />}>
                 
                 <div className="dashboard-card-container">
                     {dashboardData.map((data, index) => (

@@ -1,8 +1,26 @@
+import './ppmp-masterlist.css';
+import { useEffect, useState } from 'react';
 import ItemsCountCard from '../../components/cards/items_count_card/ItemsCountCard';
 import MasterlistTable from '../../components/tables/masterlist_table/MasterlistTable';
-import './ppmp-masterlist.css';
+import LoadingWrapper from '../../components/wrappers/loading wrapper/LoadingWrapper';
+import PpmpMasterlistSkeleton from '../../components/skeleton/skeleton_pages/PpmpMasterlistSkeleton';
 
 export default function PpmpMasterlist() {
+
+    const [isLoading, setIsLoading] = useState(true);
+    
+    useEffect(() => {
+        const loadDashboardData = async () => {
+            try {
+                await new Promise(resolve => setTimeout(resolve, 500));
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        loadDashboardData();
+    }, []);
+
     const ItemsCountCardData: {icon: string, title: string, count: number, color: string}[] = [
         {icon: 'package', title: 'Total Items in Planned', count: 256, color: 'gray'},
         {icon: 'chart', title: 'Total Available Items', count: 189, color: 'blue'},
@@ -132,22 +150,24 @@ export default function PpmpMasterlist() {
 
     return (
         <main className="page-container masterlist">
-            <div className="items-count-card-container">
-                {ItemsCountCardData.map((data, index) => (
-                    <ItemsCountCard 
-                        key={index} 
-                        icon={data.icon} 
-                        title={data.title} 
-                        count={data.count} 
-                        color={data.color} />
-                ))}
-            </div>
-            <MasterlistTable 
-                itemCount={256} 
-                unitCount={189} 
-                data={mockPPMPData}
-                exportFunction={exportLatestPPMP}
-                />
+            <LoadingWrapper isLoading={isLoading} skeleton={<PpmpMasterlistSkeleton />}>
+                <div className="items-count-card-container">
+                    {ItemsCountCardData.map((data, index) => (
+                        <ItemsCountCard 
+                            key={index} 
+                            icon={data.icon} 
+                            title={data.title} 
+                            count={data.count} 
+                            color={data.color} />
+                    ))}
+                </div>
+                <MasterlistTable 
+                    itemCount={256} 
+                    unitCount={189} 
+                    data={mockPPMPData}
+                    exportFunction={exportLatestPPMP}
+                    />
+            </LoadingWrapper>
         </main>
     )
 }
