@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+.view-in-lieu{
+    @apply fixed flex-col w-3xl p-6 rounded-lg bg-white shadow-lg left-0 right-0 top-1/2 -translate-y-1/2 mx-auto z-50;
+    & > .header{
+        @apply flex flex-row justify-start items-center mb-4 gap-2;
+        & > .title{
+            @apply flex flex-col items-start justify-center;
+            & > h3{
+                @apply text-sm font-semibold;
+            }
+            & > p{
+                @apply text-xs font-normal;
+                color: var(--text-gray);
+            }
+        }
+    }
+    & > .top-content{
+        @apply flex flex-row items-center justify-between w-full gap-2;
+        & > p{
+            @apply flex flex-row items-center;
+        }
+    }
+    & > .table-content{
+        @apply flex flex-col justify-center items-start w-full gap-1 p-4 rounded-lg -mt-3;
+        & > h3{
+            @apply text-xs font-bold bg-gray-100 w-full p-2 rounded-lg text-start;
+        }
+        & > .total{
+            @apply flex flex-row items-center justify-between w-full gap-2 p-2 rounded-lg border;
+            & > p{
+                @apply flex flex-row w-full items-center justify-end text-xs font-semibold gap-2;
+            }
+        }
+        & > table{
+            @apply w-full border-2 border-black;
+            & > thead{
+                @apply bg-blue-100;
+                & > tr{
+                    & > th{
+                        @apply text-xs font-bold px-3 py-1 text-start border-2 border-black;
+                    }
+                }
+            }
+            & > tbody{
+                & > tr{
+                    & > td{
+                        @apply text-xs font-medium px-3 py-1 text-start border-2 border-black;
+                    }
+                }
+            }
+        }
+        &.original{
+            & > h3{
+                @apply bg-red-100;
+            }
+            & > table > thead > tr > th{
+                @apply bg-red-100;
+            }
+            & > .total{
+                @apply border-red-500 bg-red-100 text-red-500;
+            }
+        }
+        &.substitute{
+            & > h3{
+                @apply bg-green-100;
+            }
+            & > table > thead > tr > th{
+                @apply bg-green-100;
+            }
+            & > .total{
+                @apply border-green-500 bg-green-100 text-green-500;
+            }
+        }
+    }
+    & > .financial-summary{
+        @apply flex flex-col items-start justify-start w-full gap-1 mb-2;
+        & > h3{
+            @apply text-sm font-bold bg-gray-100 w-full p-2 rounded-lg text-start;
+        }
+        & > p{
+            @apply flex flex-row items-center justify-between w-full text-xs font-semibold gap-2 border border-gray-300 rounded-lg p-2;
+        }
+        & :nth-child(2){
+            @apply border-red-500 bg-red-100 text-red-500;
+        }
+        & :nth-child(3){
+            @apply border-green-500 bg-green-100 text-green-500;
+        }
+    }
+    & > .action-btns{
+        @apply flex flex-row items-center justify-between w-full gap-2;
+        & > .cancel-btn-container{
+            @apply flex-1;
+        }
+    }
+}

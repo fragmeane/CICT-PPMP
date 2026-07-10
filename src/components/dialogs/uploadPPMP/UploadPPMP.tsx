@@ -12,6 +12,7 @@ export default function UploadPPMP({ isOpen, onClose }: UploadPPMPProps) {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [fileUploaded, setFileUploaded] = useState<File | null>(null);
+    const [totalABC, setTotalABC] = useState(0);
 
     const rowStartOptions = Array.from({ length: 100 }, (_, i) => i + 1);
     const [selectedRowStart, setSelectedRowStart] = useState<number | null>(null);
@@ -75,6 +76,19 @@ export default function UploadPPMP({ isOpen, onClose }: UploadPPMPProps) {
         else if (mapColumnsStep === "current") {
             setMapColumnsStep("upcoming");
             setUploadFileStep("current");
+        }
+    }
+
+    function handleTotalABCChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const value = parseFloat(e.target.value);
+        const errorMessageElement = document.getElementById("totalABCErrors");
+        setTotalABC(0);
+
+        if (isNaN(value) || value <= 0) {
+            errorMessageElement!.textContent = "Total ABC must be a positive number.";
+        } else {
+            errorMessageElement!.textContent = "";
+            setTotalABC(value);
         }
     }
 
@@ -156,6 +170,16 @@ export default function UploadPPMP({ isOpen, onClose }: UploadPPMPProps) {
                     <br />
                     <p>File: <strong>{fileUploaded?.name}</strong></p>
                     <div className="selection-container">
+                        <div className="totalABC">
+                            <div className="title">
+                                <h5>Total ABC</h5>
+                                <p>Total Approved Budget for Contract value</p>
+                            </div>
+                            <div className="field-group">
+                                <input type="number" onChange={handleTotalABCChange} min={1} step={0.01} placeholder="Enter the Total ABC"/>
+                                <p className="error-message" id="totalABCErrors"></p>
+                            </div>
+                        </div>
                         <div className="group row">
                             <div className="title">
                                 <h5>Row Start</h5>
@@ -278,7 +302,7 @@ export default function UploadPPMP({ isOpen, onClose }: UploadPPMPProps) {
                         <IconArrowNarrowRightDashed size={18} color="white"/>
                     </button>
                 )}
-                {mapColumnsStep === "current" && selectedColumnMappings.itemName && selectedColumnMappings.unit && selectedColumnMappings.totalQuantity && selectedColumnMappings.pricePerUnit && selectedColumnMappings.rowStart && (
+                {mapColumnsStep === "current" && selectedColumnMappings.itemName && selectedColumnMappings.unit && selectedColumnMappings.totalQuantity && selectedColumnMappings.pricePerUnit && selectedColumnMappings.rowStart && totalABC > 0 && (
                     <button className="btn-solid green" onClick={() => {
                         setMapColumnsStep("done");
                         setPreviewImportStep("current");

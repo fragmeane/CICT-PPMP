@@ -17,8 +17,7 @@ export default function InLieuApprovals() {
     interface InLieuApprovalData {
         id: number;
         requestDate: string;
-        staffName: string;
-        unit: string;
+        requestedBy: string;
         originalItems: Item[];
         proposedItems: Item[];
         budgetImpact: BudgetImpact;
@@ -29,8 +28,7 @@ export default function InLieuApprovals() {
         {
             id: 1,
             requestDate: "2024-06-01",
-            staffName: "John Doe",
-            unit: "pieces",
+            requestedBy: "John Doe",
             originalItems: [
                 {
                     id: 1,
@@ -80,8 +78,7 @@ export default function InLieuApprovals() {
         {
             id: 1,
             requestDate: "2024-06-01",
-            staffName: "John Doe",
-            unit: "pieces",
+            requestedBy: "John Doe",
             originalItems: [
                 {
                     id: 1,
@@ -105,7 +102,7 @@ export default function InLieuApprovals() {
                 proposedItemsTotal: 750.00,
                 difference: 250.00
             },
-            status: "Pending"
+            status: "Rejected"
         }
     ];
 
