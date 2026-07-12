@@ -47,23 +47,6 @@ export default function ProcurementMonitor() {
         
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const loadPpmpMonitoringData = async () => {
-            const accessToken = await getAccessToken();
-            if(!accessToken){
-                navigate('/login');
-                toast.error("User not logged in. Please log in again.");
-            }
-            try {
-                await new Promise(resolve => setTimeout(resolve, 500));
-            } finally {
-                setIsInitialLoading(false);
-            }
-        };
-
-        loadPpmpMonitoringData();
-    }, []);
-
     const [ppmpMonitoringData, setPpmpMonitoringData] = useState<ppmpMonitoringData[]>([
         {
             itemId: 1,
@@ -136,6 +119,11 @@ export default function ProcurementMonitor() {
 
     useEffect(() => {
         const loadPpmpMonitoringData = async () => {
+            const accessToken = await getAccessToken();
+            if(!accessToken){
+                navigate('/login');
+                toast.error("User not logged in. Please log in again.");
+            }
             try {
                 await new Promise(resolve => setTimeout(resolve, 500));
             } finally {

@@ -1,21 +1,12 @@
 import "./new-item-card.css";
 import { IconTrash } from '@tabler/icons-react';
 
-interface newItemsArray {
-    itemId: number;
-    itemName: string;
-    unitMeasurement: string;
-    quantity: number;
-    priceCatalog: number;
-}
-
 interface NewItemCardProps {
     itemId: number;
     itemName: string;
     unitMeasurement: string;
     quantity: number;
     priceCatalog: number;
-    newItemsArrayHolder?: newItemsArray[];
     ppmpReallocationData?: any[];
     onDelete: (id: number) => void;
     onUpdate: (id: number, field: 'name' | 'measurementUnit' | 'quantity' | 'unitPrice', value: string | number) => void;
@@ -33,7 +24,7 @@ export default function NewItemCard({
 }: NewItemCardProps) {
     
     const totalPrice = quantity * priceCatalog;
-    const isNewItemExisting = ppmpReallocationData?.some(item => item.itemName === itemName) || false;
+    const isNewItemExisting = ppmpReallocationData?.some(item => item.itemId === itemId) || false;
 
     return (
         <div className="new-item-card">
@@ -47,7 +38,7 @@ export default function NewItemCard({
                     onChange={(e) => onUpdate(itemId, 'name', e.target.value)} 
                     required
                     disabled={isNewItemExisting}
-                    className={isNewItemExisting ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""}
+                    className="isNewItemExisting"
                 />
             </div>
             <div className="bottom-field-container">
@@ -61,7 +52,7 @@ export default function NewItemCard({
                         onChange={(e) => onUpdate(itemId, 'measurementUnit', e.target.value)}
                         required
                         disabled={isNewItemExisting}
-                        className={isNewItemExisting ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""}
+                        className="isNewItemExisting"
                     />
                 </div>
                 <div className="input-group">
@@ -86,7 +77,7 @@ export default function NewItemCard({
                         onChange={(e) => onUpdate(itemId, 'unitPrice', parseFloat(e.target.value) || 0)} 
                         required
                         disabled={isNewItemExisting}
-                        className={isNewItemExisting ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""}
+                        className="isNewItemExisting"
                     />
                 </div>
             </div>

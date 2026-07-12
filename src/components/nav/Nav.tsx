@@ -7,6 +7,7 @@ import { IconLayoutDashboard, IconClipboardList, IconChartColumn, IconTransform,
 import type { JSX } from 'react/jsx-dev-runtime';
 import { getAccessToken, logoutUser } from "../../../supadb"
 import { toast } from '../toast/ToastService.js';
+import { showCircleLoadingDialog } from '../dialogs/circle_loading_dialog/CircleLoadingDialogService';
 
 interface NavItem {
     name: string;
@@ -42,9 +43,20 @@ export default function Nav({ userRole, fiscalYear }: NavProps) {
     ]
 
     const navigate = useNavigate();
-    async function handleLogout() {
-        await logoutUser();
-        navigate('/login');
+
+    async function handleLogout() { 
+        const closeLoading = showCircleLoadingDialog();
+
+        try {
+            await logoutUser();
+            navigate('/login');
+            toast.success("Logged out successfully.");
+        } catch (error) {
+            console.error("Logout error:", error);
+            toast.error("Network error. Please try again later.");
+        } finally {
+            closeLoading();
+        }
     }
 
     async function checkAccess(){

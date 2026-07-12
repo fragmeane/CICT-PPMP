@@ -9,6 +9,7 @@ import { useState } from 'react';
 import LeftLoginContainer from '../../components/containers/left_login_container/LeftLoginContainer';
 import { toast } from '../../components/toast/ToastService.js';
 import { supabase } from '../../../supadb';
+import { showCircleLoadingDialog } from '../../components/dialogs/circle_loading_dialog/CircleLoadingDialogService';
 
 export default function Login(){
     const navigate = useNavigate();
@@ -47,33 +48,44 @@ export default function Login(){
         }
     }
 
-    async function login(){
-        if(!email.trim() && !password.trim()){
-            setEmailError("Email address is required.");
-            setPasswordError("Password is required.");
+    async function login() {
+        if(!email.trim() || !password.trim()){
+            if (!email.trim()) setEmailError("Email address is required.");
+            if (!password.trim()) setPasswordError("Password is required.");
             return;
         }
 
-        const formData = new FormData();
-        formData.append("email", email);
-        formData.append("password", password);
-        const response = await fetch("http://127.0.0.1:8000/api/auth/login/", {
-            method: "POST",
-            body: formData
-        });
-        const responseData = await response.json();
-        console.log(responseData);
-        if(responseData.status === "success"){
-            await supabase.auth.setSession({
-                access_token: responseData.access_token,
-                refresh_token: responseData.refresh_token,
+        const closeLoading = showCircleLoadingDialog();
+
+        try {
+            const formData = new FormData();
+            formData.append("email", email);
+            formData.append("password", password);
+
+            const response = await fetch("https://test-ppmp.onrender.com/api/auth/login/", {
+                method: "POST",
+                body: formData
             });
-            toast.success("Logged in successfully!");
-            navigate("/dashboard");
-        }else if(responseData.status === "error"){
-            toast.error("Login failed. Please check your credentials.");
+
+            const responseData = await response.json();
+            
+            if(responseData.status === "success"){
+                await supabase.auth.setSession({
+                    access_token: responseData.access_token,
+                    refresh_token: responseData.refresh_token,
+                });
+                toast.success("Logged in successfully!");
+                navigate("/dashboard");
+            } else {
+                toast.error(responseData.message || "Login failed. Please check your credentials.");
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            toast.error("Network error. Please try again later.");
+        } finally {
+            closeLoading();
         }
-  }
+    }
 
     return (
         <main className="login-page-container">

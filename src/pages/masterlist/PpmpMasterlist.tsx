@@ -21,68 +21,16 @@ interface PPMPItem {
 
 export default function PpmpMasterlist() {
     const navigate = useNavigate();
-    const [ppmpData, setPpmpData] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
 
-    const [totalPlannedItemCount, setTotalPlannedItemCount] = useState(258);
-    const [totalAvailableItemCount, setTotalAvailableItemCount] = useState(189);
-    const [totalPendingItemCount, setTotalPendingItemCount] = useState(12);
-    const [totalFulfilledItemCount, setTotalFulfilledItemCount] = useState(58);
-    const [totalPlannedFunds, setTotalPlannedFunds] = useState(4300000);
+    const [totalPlannedItemCount, setTotalPlannedItemCount] = useState(0);
+    const [totalAvailableItemCount, setTotalAvailableItemCount] = useState(0);
+    const [totalPendingItemCount, setTotalPendingItemCount] = useState(0);
+    const [totalFulfilledItemCount, setTotalFulfilledItemCount] = useState(0);
+    const [totalPlannedFunds, setTotalPlannedFunds] = useState(0);
 
-    const [ppmpTableData, setPpmpTableData] = useState<PPMPItem[]>([
-    {
-        itemId: 1,
-        itemName: "Solid State Drive (1TB NVMe Gen4)",
-        unitMeasurement: "piece",
-        plannedQuantity: 10,
-        availableQuantity: 9,
-        pendingQuantity: 1,
-        fulfilledQuantity: 0,
-        priceCatalog: 4500.00,
-    },
-    {
-        itemId: 2,
-        itemName: "LED Monitor (24-inch IPS, 144Hz)",
-        unitMeasurement: "unit",
-        plannedQuantity: 5,
-        availableQuantity: 5,
-        pendingQuantity: 0,
-        fulfilledQuantity: 0,
-        priceCatalog: 8500.00,
-    },
-    {
-        itemId: 3,
-        itemName: "Mechanical Keyboard (Hot-swappable)",
-        unitMeasurement: "piece",
-        plannedQuantity: 15,
-        availableQuantity: 5,
-        pendingQuantity: 10,
-        fulfilledQuantity: 0,
-        priceCatalog: 2200.00,
-    },
-    {
-        itemId: 4,
-        itemName: "CAT6 UTP Network Cable (305m Roll)",
-        unitMeasurement: "roll",
-        plannedQuantity: 2,
-        availableQuantity: 0,
-        pendingQuantity: 0,
-        fulfilledQuantity: 2,
-        priceCatalog: 5800.00,
-    },
-    {
-        itemId: 5,
-        itemName: "Wireless Access Point (WiFi 6 Dual Band)",
-        unitMeasurement: "unit",
-        plannedQuantity: 3,
-        availableQuantity: 0,
-        pendingQuantity: 0,
-        fulfilledQuantity: 3,
-        priceCatalog: 4200.00,
-    },
-]);
+    const [ppmpTableData, setPpmpTableData] = useState<PPMPItem[]>([]);
     
     useEffect(() => {
         const loadPpmpTableData = async () => {
@@ -92,7 +40,7 @@ export default function PpmpMasterlist() {
                 toast.error("User not logged in. Please log in again.");
             }
             try {
-                await fetch('http://127.0.0.1:8000/api/masterlist/', {
+                await fetch('https://test-ppmp.onrender.com/api/masterlist/', {
                     method: "GET",
                 }).then(response =>{
                     if(!response.ok){
@@ -101,7 +49,7 @@ export default function PpmpMasterlist() {
                     return response.json()
                 })
                 .then(result =>{
-                    setPpmpData(result);
+                    setPpmpTableData(result);
                 })
             } finally {
                 setIsInitialLoading(false);
@@ -140,7 +88,7 @@ export default function PpmpMasterlist() {
                 <MasterlistTable 
                     itemCount={256} 
                     unitCount={189} 
-                    data={ppmpData}
+                    data={ppmpTableData}
                     exportFunction={exportLatestPPMP}
                     />
             </LoadingWrapper>
