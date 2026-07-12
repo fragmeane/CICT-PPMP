@@ -3,7 +3,7 @@ import { IconPrinter, IconTransfer, IconX, IconCheck, IconSearch, IconShoppingCa
 import alabIcon from "../../assets/icons/alab.svg";
 import NewItemCard from "../../components/cards/new_item_card/NewItemCard";
 import LieuItemCard from "../../components/cards/lieu_item_card/LieuItemCard";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import InfoNote from "../../components/notes/info_note/InfoNote";
 import WarningNote from "../../components/notes/warning_note/WarningNote";
 import ViewInLieu from "../../components/dialogs/view_in_lieu/ViewInLieu";
@@ -41,6 +41,15 @@ export default function InLieuReallocation() {
 
     const [isPrintPROpen, setPrintPROpen] = useState(false);
 
+    const [openFunds, setOpenFunds] = useState(1000000);
+
+    const [ppmpReallocationData, setPpmpReallocationData] = useState<ppmpReallocationData[]>([
+        { itemId: 1, itemName: "Solid State Drive (1TB NVMe Gen4)", unitMeasurement: "piece", plannedQuantity: 10, availableQuantity: 9, pendingQuantity: 1, fulfilledQuantity: 0, priceCatalog: 4500.00 },
+        { itemId: 2, itemName: "LED Monitor (24-inch IPS, 144Hz)", unitMeasurement: "unit", plannedQuantity: 5, availableQuantity: 5, pendingQuantity: 0, fulfilledQuantity: 0, priceCatalog: 8500.00 },
+        { itemId: 3, itemName: "Mechanical Keyboard (Hot-swappable)", unitMeasurement: "piece", plannedQuantity: 15, availableQuantity: 5, pendingQuantity: 10, fulfilledQuantity: 0, priceCatalog: 2200.00 },
+        { itemId: 4, itemName: "Mechanical Keyboard (Hot-swappable)", unitMeasurement: "piece", plannedQuantity: 15, availableQuantity: 0, pendingQuantity: 15, fulfilledQuantity: 0, priceCatalog: 2200.00 }
+    ]);
+
     useEffect(() => {
         const loadPpmpReallocationData = async () => {
             try {
@@ -53,12 +62,32 @@ export default function InLieuReallocation() {
         loadPpmpReallocationData();
     }, []);
 
-    const [ppmpReallocationData, setPpmpReallocationData] = useState<ppmpReallocationData[]>([
-        { itemId: 1, itemName: "Solid State Drive (1TB NVMe Gen4)", unitMeasurement: "piece", plannedQuantity: 10, availableQuantity: 9, pendingQuantity: 1, fulfilledQuantity: 0, priceCatalog: 4500.00 },
-        { itemId: 2, itemName: "LED Monitor (24-inch IPS, 144Hz)", unitMeasurement: "unit", plannedQuantity: 5, availableQuantity: 5, pendingQuantity: 0, fulfilledQuantity: 0, priceCatalog: 8500.00 },
-        { itemId: 3, itemName: "Mechanical Keyboard (Hot-swappable)", unitMeasurement: "piece", plannedQuantity: 15, availableQuantity: 5, pendingQuantity: 10, fulfilledQuantity: 0, priceCatalog: 2200.00 },
-        { itemId: 4, itemName: "Mechanical Keyboard (Hot-swappable)", unitMeasurement: "piece", plannedQuantity: 15, availableQuantity: 0, pendingQuantity: 15, fulfilledQuantity: 0, priceCatalog: 2200.00 }
-    ]);
+    const [inLieuSearchTerm, setInLieuSearchTerm] = useState<string>("");
+    const [newItemsSearchTerm, setNewItemsSearchTerm] = useState<string>("");
+
+    let inLieuData = ppmpReallocationData.filter((item) => {
+        const searchLower = inLieuSearchTerm.toLowerCase();
+        const matchesSearch = inLieuSearchTerm === "" || item.itemName.toLowerCase().includes(searchLower);
+
+        return matchesSearch;
+    });
+
+    const filteredCatalogItems = newItemsSearchTerm.trim() === "" 
+        ? []
+        : ppmpReallocationData.filter(item => 
+            item.itemName.toLowerCase().includes(newItemsSearchTerm.toLowerCase())
+        );
+
+    const handleSelectNewItem = (catalogItem: any) => {
+        setNewItemsArray(prev => [...prev, {
+            itemId: Date.now(),
+            name: catalogItem.itemName,
+            measurementUnit: catalogItem.unitMeasurement,
+            quantity: 1,
+            unitPrice: catalogItem.priceCatalog
+        }]);
+        setNewItemsSearchTerm("");
+    };
 
     const [newItemsArray, setNewItemsArray] = useState<NewItem[]>([
         { itemId: Date.now(), name: "", measurementUnit: "", quantity: 1, unitPrice: 0 }
@@ -114,13 +143,18 @@ export default function InLieuReallocation() {
     };
 
     const handleSaveToDatabase = () => {
+        const actualItemsToReduce = selectedLieuItems.filter(item => item.itemId !== 0);
+        const openFundsUsed = selectedLieuItems.find(item => item.itemId === 0)?.reduceQuantity || 0;
+
         const payload = {
             status: "Pending Approval",
             requiredBudget: requiredBudget,
             lieuFundedValue: selectedItemsValue,
+            openFundsUtilized: openFundsUsed, // iSave to sa new column sa IN_LIEU table openFundsUtilized
             itemsToProcure: newItemsArray,
-            itemsToReduce: selectedLieuItems 
+            itemsToReduce: actualItemsToReduce // eto naman ungg original items na galing sa PPMP na ire-reduce natin
         };
+        
         console.log("Full JSON Payload ready for database:", payload);
     };
 
@@ -154,9 +188,32 @@ export default function InLieuReallocation() {
 
                 <div className="new-lieu-items-container">
                     <div className="new-items-container">
-                        <div className="search-container">
+                        <div className="search-container relative">
                             <IconSearch size={24} />
-                            <input type="text" placeholder="Search Item to be “In Lieu of” new Items..." className="search-input" />
+                            <input 
+                                type="text" 
+                                placeholder="Search Catalog to add new item..." 
+                                className="search-input w-full" 
+                                value={newItemsSearchTerm}
+                                onChange={(e) => setNewItemsSearchTerm(e.target.value)} />
+                            
+                            {filteredCatalogItems.length > 0 && (
+                                <div className="option-container">
+                                    <ul>
+                                        {filteredCatalogItems.map((item) => (
+                                            <li 
+                                                key={item.itemId}
+                                                onClick={() => handleSelectNewItem(item)}>
+
+                                                <span className="item-name">{item.itemName}</span>
+                                                <span className="item-details">
+                                                    PHP {item.priceCatalog.toLocaleString()} / {item.unitMeasurement}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                         </div>
                         <div className="title-button-container">
                             <h3><IconShoppingCart size={24} color="green"/> New Needs Cart</h3>
@@ -164,7 +221,7 @@ export default function InLieuReallocation() {
                         </div>
                         <div className="new-items-card-container">
                             {newItemsArray.map((item) => (
-                                <NewItemCard key={item.itemId} id={item.itemId} name={item.name} measurementUnit={item.measurementUnit} quantity={item.quantity} unitPrice={item.unitPrice} onDelete={handleDeleteItem} onUpdate={handleUpdateItem} />
+                                <NewItemCard key={item.itemId} itemId={item.itemId} itemName={item.name} unitMeasurement={item.measurementUnit} quantity={item.quantity} priceCatalog={item.unitPrice} onDelete={handleDeleteItem} onUpdate={handleUpdateItem} ppmpReallocationData={ppmpReallocationData} newItemsArray={newItemsArray} />
                             ))}
                         </div>
                     </div>
@@ -172,7 +229,7 @@ export default function InLieuReallocation() {
                     <div className="lieu-items-container">
                         <div className="search-container">
                             <IconSearch size={24} />
-                            <input type="text" placeholder="Search Item to be “In Lieu of” new Items..." className="search-input" />
+                            <input type="text" placeholder="Search Item to be “In Lieu of” new Items..." className="search-input" value={inLieuSearchTerm} onChange={(e) => setInLieuSearchTerm(e.target.value)} />
                         </div>
                         <div className="title-button-container">
                             <h3><IconTransform size={24} color="red"/> Available Lieu Pool</h3>
@@ -183,7 +240,33 @@ export default function InLieuReallocation() {
                         </div>
                         <LoadingWrapper isLoading={isInitialLoading} skeleton={<InLieuReallocationSkeleton />}>
                             <div className="lieu-items-card-container">
-                                {ppmpReallocationData?.map((item) => {
+                                {openFunds > 0 && (() => {
+                                    const selectedOpenFunds = selectedLieuItems.find(selected => selected.itemId === 0);
+                                    const isSelected = !!selectedOpenFunds;
+                                    const currentReduceQty = selectedOpenFunds ? selectedOpenFunds.reduceQuantity : 0;
+
+                                    return (
+                                        <LieuItemCard
+                                            key={0}
+                                            itemId={0}
+                                            itemName="Unallocated Open Funds"
+                                            unitMeasurement="PHP"
+                                            priceCatalog={1}     
+                                            plannedQuantity={openFunds}
+                                            availableQuantity={openFunds}
+                                            isSelected={isSelected}
+                                            reduceQuantity={currentReduceQty}
+                                            onToggle={() => handleToggleLieuItem({
+                                                itemId: 0,
+                                                itemName: "Unallocated Open Funds",
+                                                unitMeasurement: "PHP",
+                                                priceCatalog: 1
+                                            })}
+                                            onQuantityChange={handleUpdateLieuQuantity}
+                                        />
+                                    );
+                                })()}
+                                {inLieuData?.map((item) => {
                                     const selectedItemInfo = selectedLieuItems.find(selected => selected.itemId === item.itemId);
                                     const isSelected = !!selectedItemInfo;
                                     const currentReduceQty = selectedItemInfo ? selectedItemInfo.reduceQuantity : 0;
@@ -191,7 +274,7 @@ export default function InLieuReallocation() {
                                     return item.availableQuantity > 0 && (
                                         <LieuItemCard 
                                             key={item.itemId}
-                                            id={item.itemId}
+                                            itemId={item.itemId}
                                             itemName={item.itemName}
                                             unitMeasurement={item.unitMeasurement}
                                             priceCatalog={item.priceCatalog}
@@ -208,7 +291,7 @@ export default function InLieuReallocation() {
                         </LoadingWrapper>
                     </div>
                 </div>
-                {remainingBudget > 0 && newItemsArray.length > 0 && requiredBudget > 0 && isNewItemsValid && isOldItemsValid ?(
+                {remainingBudget >= 0 && newItemsArray.length > 0 && requiredBudget > 0 && isNewItemsValid && isOldItemsValid ?(
                     <div className="button-container">
                         <button 
                             className="btn-secondary" 
@@ -243,7 +326,7 @@ export default function InLieuReallocation() {
                         itemName: item.itemName,
                         unitMeasurement: item.unitMeasurement,
                         priceCatalog: item.priceCatalog,
-                        availableQuantityAfter: (ppmpReallocationData?.find(ppmpItem => ppmpItem.itemId === item.itemId)?.availableQuantity ?? 0) - item.reduceQuantity,
+                        availableQuantityAfter: (ppmpReallocationData?.find(ppmpItem => ppmpItem.itemId === item.itemId)?.availableQuantity ?? (selectedLieuItems.find(i => i.itemId === item.itemId)?.itemId === 0 ? openFunds : 0)) - item.reduceQuantity,
                         plannedQuantity: ppmpReallocationData?.find(ppmpItem => ppmpItem.itemId === item.itemId)?.plannedQuantity ?? 0
                     }))}
                     proposedItems={newItemsArray.map(item => ({

@@ -23,7 +23,7 @@
     }
 }
 .content{
-    @apply flex flex-col items-start justify-start w-full print:gap-5 print:p-5 print:mt-5;
+    @apply flex flex-col items-start justify-start w-full print:gap-5 print:mt-5;
     & > .top-content{
         @apply flex flex-row items-center justify-between w-full gap-2 px-4;
         & > p{

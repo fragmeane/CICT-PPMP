@@ -3,11 +3,11 @@ import { IconCircle, IconCircleCheckFilled } from '@tabler/icons-react';
 import { useState } from "react";
 
 interface LieuItemCardProps {
-    id: number;
+    itemId: number;
     itemName: string;
     unitMeasurement: string;
     priceCatalog: number;
-    plannedQuantity: number;
+    plannedQuantity?: number;
     availableQuantity: number;
     isSelected: boolean;
     reduceQuantity: number;
@@ -15,8 +15,7 @@ interface LieuItemCardProps {
     onQuantityChange: (id: number, qty: number) => void;
 }
 
-export default function LieuItemCard({
-    id, itemName, unitMeasurement, priceCatalog, plannedQuantity, availableQuantity, 
+export default function LieuItemCard({itemId, itemName, unitMeasurement, priceCatalog, plannedQuantity, availableQuantity, 
     isSelected, reduceQuantity, onToggle, onQuantityChange
 }: LieuItemCardProps) {
 
@@ -29,13 +28,13 @@ export default function LieuItemCard({
 
         if (value > availableQuantity) {
             setError("Exceeds available quantity");
-            onQuantityChange(id, 0); 
+            onQuantityChange(itemId, 0); 
         } else if (value < 0) {
             setError("Invalid quantity");
-            onQuantityChange(id, 0);
+            onQuantityChange(itemId, 0);
         } else {
             setError("");
-            onQuantityChange(id, value); 
+            onQuantityChange(itemId, value); 
         }
     }
 
@@ -61,10 +60,10 @@ export default function LieuItemCard({
             
             <div className={`lower-content-container ${isSelected ? "" : "hidden"}`}>
                 <div className="input-group">
-                    <label htmlFor={`reduce-quantity-${id}`}>Reduce by:</label>
+                    <label htmlFor={`reduce-quantity-${itemId}`}>Reduce by:</label>
                     <input 
                         type="number" 
-                        id={`reduce-quantity-${id}`} 
+                        id={`reduce-quantity-${itemId}`} 
                         min="1" 
                         max={availableQuantity} 
                         value={reduceQuantity === 0 ? '' : reduceQuantity}
