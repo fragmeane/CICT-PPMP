@@ -5,7 +5,7 @@ import PrintPR from "../print_PR/PrintPR";
 import { getAccessToken, getUserID } from "../../../../supadb"
 
 interface CreatePRProps {
-    itemID: string;
+    itemId: string;
     itemName: string;
     availableQuantity: number;
     pendingQuantity: number;
@@ -15,7 +15,7 @@ interface CreatePRProps {
     onClose: () => void;
 }
 
-export default function CreatePR({itemID, itemName, availableQuantity, pendingQuantity, fulfilledQuantity, priceCatalog, isOpen, onClose }: CreatePRProps) {
+export default function CreatePR({itemId, itemName, availableQuantity, pendingQuantity, fulfilledQuantity, priceCatalog, isOpen, onClose }: CreatePRProps) {
     const [requestQuantity, setRequestQuantity] = useState(1);
     const [techSpecs, setTechSpecs] = useState("");
     const dialogRef = useRef<HTMLDialogElement>(null);
@@ -46,12 +46,12 @@ export default function CreatePR({itemID, itemName, availableQuantity, pendingQu
     };
 
     function handleRequestQuantityChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const value = parseInt(e.target.value);
-        const errorMessageElement = document.getElementById(`requestQtyError${itemID}`);
-        setRequestQuantity(0);
+        const value = e.target.valueAsNumber;
+        const errorMessageElement = document.getElementById(`requestQtyError${itemId}`);
 
-        if (value < 1 || value > availableQuantity) {
+        if (!Number.isFinite(value) || value < 1 || value > availableQuantity) {
             errorMessageElement!.textContent = `Request quantity must be between 1 and ${availableQuantity}.`;
+            setRequestQuantity(0);
         } else {
             errorMessageElement!.textContent = "";
             setRequestQuantity(value);
@@ -60,7 +60,7 @@ export default function CreatePR({itemID, itemName, availableQuantity, pendingQu
 
     function handleTechSpecsChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
         const value = e.target.value;
-        const errorMessageElement = document.getElementById(`specsError${itemID}`);
+        const errorMessageElement = document.getElementById(`specsError${itemId}`);
 
         if (value.trim() === "") {
             errorMessageElement!.textContent = "Technical specifications cannot be empty.";
@@ -79,7 +79,7 @@ export default function CreatePR({itemID, itemName, availableQuantity, pendingQu
         }
 
         const formData = new FormData();
-        formData.append("item_id", Number(itemID).toString());
+        formData.append("item_id", String(itemId));
         formData.append("specifications", String(techSpecs));
         formData.append("request_quantity", String(requestQuantity));
         formData.append("user_id", String(await getUserID(await getAccessToken() || "")));
@@ -114,19 +114,19 @@ export default function CreatePR({itemID, itemName, availableQuantity, pendingQu
 
                 <div className="input-group">
                     <div className="field-group">
-                        <label htmlFor={`requestQty${itemID}`}>Request Quantity</label>
-                        <input type="number" id={`requestQty${itemID}`} min="1" max={availableQuantity} value={requestQuantity} onChange={handleRequestQuantityChange} />
-                        <p className="error-message" id={`requestQtyError${itemID}`}></p>
+                        <label htmlFor={`requestQty${itemId}`}>Request Quantity</label>
+                        <input type="number" id={`requestQty${itemId}`} min="1" max={availableQuantity} value={requestQuantity} onChange={handleRequestQuantityChange} />
+                        <p className="error-message" id={`requestQtyError${itemId}`}></p>
                     </div>
                     <div className="field-group">
-                        <label htmlFor={`priceCatalog${itemID}`}>Price Catalog (PHP)</label>
-                        <input type="number" id={`priceCatalog${itemID}`} value={priceCatalog} readOnly />
+                        <label htmlFor={`priceCatalog${itemId}`}>Price Catalog (PHP)</label>
+                        <input type="number" id={`priceCatalog${itemId}`} value={priceCatalog} readOnly />
                     </div>
                 </div>
                 <div className="field-group">
-                    <label htmlFor={`specifications${itemID}`}>Technical Specifications</label>
-                    <textarea id={`specifications${itemID}`} rows={4} placeholder="Enter technical specifications..." value={techSpecs} onChange={handleTechSpecsChange}></textarea>
-                    <p className="error-message" id={`specsError${itemID}`}></p>
+                    <label htmlFor={`specifications${itemId}`}>Technical Specifications</label>
+                    <textarea id={`specifications${itemId}`} rows={4} placeholder="Enter technical specifications..." value={techSpecs} onChange={handleTechSpecsChange}></textarea>
+                    <p className="error-message" id={`specsError${itemId}`}></p>
                 </div>
                 <div className="total-price">
                     <p>Total Amount:</p>
