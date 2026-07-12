@@ -13,6 +13,26 @@ interface MasterlistTableProps {
 export default function MasterlistTable({ itemCount, unitCount, exportFunction, data }: MasterlistTableProps) {
 
     const [openDialogIndex, setOpenDialogIndex] = useState<number | null>(null);
+    const [searchTerm, setSearchTerm] = useState<string>("");
+    const [filterOption, setFilterOption] = useState<string>("");
+
+    let processedData = data.filter((item) => {
+        const searchLower = searchTerm.toLowerCase();
+        const matchesSearch = searchTerm === "" || item.itemName.toLowerCase().includes(searchLower);
+
+        let matchesStatus = true;
+        if (filterOption === "pendingItems") matchesStatus = item.pendingQuantity > 0;
+        if (filterOption === "fulfilledItems") matchesStatus = item.fulfilledQuantity > 0;
+        if (filterOption === "availableItems") matchesStatus = item.availableQuantity > 0;
+
+        return matchesSearch && matchesStatus;
+    });
+
+    if (filterOption === "ascendingByItemName") {
+        processedData.sort((a, b) => a.itemName.localeCompare(b.itemName));
+    } else if (filterOption === "descendingByItemName") {
+        processedData.sort((a, b) => b.itemName.localeCompare(a.itemName));
+    }
 
     return (
         <div className="table-container masterlist">
@@ -23,14 +43,15 @@ export default function MasterlistTable({ itemCount, unitCount, exportFunction, 
                 </div>
                 <div className="search-container">
                     <IconSearch size={24} />
-                    <input type="text" placeholder="Search Items..." className="search-input" />
+                    <input type="text" placeholder="Search Items..." className="search-input" value={searchTerm}onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                 </div>
                 <button className="export-button" onClick={exportFunction}>
                     <IconFileTypeXls size={24} /> Export Latest PPMP
                 </button>
                 <div className="filter-container">
                     <IconFilter size={24} />
-                    <select className="filter-select">
+                    <select className="filter-select" value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
                         <option value="">Filter by:</option>
                         <option value="ascendingByItemName">Ascending Item Name</option>
                         <option value="descendingByItemName">Descending Item Name</option>
@@ -56,7 +77,7 @@ export default function MasterlistTable({ itemCount, unitCount, exportFunction, 
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((item, index) => (
+                        {processedData.map((item, index) => (
                             <tr key={index}>
                                 <td>{item.ItemName}</td>
                                 <td>{item.UnitName}</td>

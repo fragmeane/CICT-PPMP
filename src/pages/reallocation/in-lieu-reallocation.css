@@ -55,6 +55,26 @@
 
                 & > .search-container {
                         @apply w-full;
+                        & > .option-container{
+                            @apply absolute top-full left-0 mt-1 w-full bg-white border rounded-lg shadow-2xl z-50 max-h-60 overflow-y-auto;
+                            & > ul{
+                                @apply flex flex-col;
+                                & > li{
+                                    @apply px-3 py-2 text-sm cursor-pointer hover:bg-red-800 hover:text-white text-red-800 border-b last:border-b-0 flex justify-between items-center transition-colors;
+                                    & > .item-name{
+                                        @apply font-semibold text-xs;
+                                    }
+                                    & > .item-details{
+                                        @apply text-gray-500 text-xs hover:text-white;
+                                    }
+                                    &:hover{
+                                        & > .item-details{
+                                            @apply text-white;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                 }
 
                 & > .title-button-container {

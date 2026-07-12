@@ -198,8 +198,12 @@
         border-color: var(--text-gray);
         color: var(--text-gray);
 
+    &:focus-within {
+        @apply border-red-800 ring-1 ring-red-800 bg-gray-100;
+    }
+
     & > .search-input {
-        @apply outline-none border-l px-2 text-black text-xs w-full;
+        @apply outline-none border-l px-2 text-black text-xs w-full font-medium;
         border-color: var(--text-gray);
     }
     &:hover {

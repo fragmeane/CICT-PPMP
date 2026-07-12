@@ -1,70 +1,97 @@
 import "./new-item-card.css";
 import { IconTrash } from '@tabler/icons-react';
 
-interface NewItemCardProps {
-    id: number;
-    name: string;
-    measurementUnit: string;
+interface newItemsArray {
+    itemId: number;
+    itemName: string;
+    unitMeasurement: string;
     quantity: number;
-    unitPrice: number;
+    priceCatalog: number;
+}
+
+interface NewItemCardProps {
+    itemId: number;
+    itemName: string;
+    unitMeasurement: string;
+    quantity: number;
+    priceCatalog: number;
+    newItemsArrayHolder?: newItemsArray[];
+    ppmpReallocationData?: any[];
     onDelete: (id: number) => void;
     onUpdate: (id: number, field: 'name' | 'measurementUnit' | 'quantity' | 'unitPrice', value: string | number) => void;
 }
 
-export default function NewItemCard({ id, name, measurementUnit, quantity, unitPrice, onDelete, onUpdate }: NewItemCardProps) {
-    const totalPrice = quantity * unitPrice;
+export default function NewItemCard({ 
+    itemId, 
+    itemName, 
+    unitMeasurement, 
+    quantity, 
+    priceCatalog, 
+    ppmpReallocationData, 
+    onDelete, 
+    onUpdate 
+}: NewItemCardProps) {
+    
+    const totalPrice = quantity * priceCatalog;
+    const isNewItemExisting = ppmpReallocationData?.some(item => item.itemName === itemName) || false;
 
     return (
         <div className="new-item-card">
             <div className="input-group">
-                <label htmlFor={`itemName-${id}`}>Item Name</label>
+                <label htmlFor={`itemName-${itemId}`}>Item Name</label>
                 <input 
                     type="text" 
-                    id={`itemName-${id}`} 
+                    id={`itemName-${itemId}`} 
                     placeholder="Enter item name" 
-                    value={name} 
-                    onChange={(e) => onUpdate(id, 'name', e.target.value)} 
+                    value={itemName} 
+                    onChange={(e) => onUpdate(itemId, 'name', e.target.value)} 
                     required
+                    disabled={isNewItemExisting}
+                    className={isNewItemExisting ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""}
                 />
             </div>
             <div className="bottom-field-container">
                 <div className="input-group">
-                    <label htmlFor={`measurementUnit-${id}`}>Measurement Unit</label>
+                    <label htmlFor={`unitMeasurement-${itemId}`}>Unit Measurement</label>
                     <input 
                         type="text" 
-                        id={`measurementUnit-${id}`} 
+                        id={`unitMeasurement-${itemId}`} 
                         placeholder="eg. piece, kg, box..." 
-                        value={measurementUnit} // Bind to state
-                        onChange={(e) => onUpdate(id, 'measurementUnit', e.target.value)} // Send string back to parent
+                        value={unitMeasurement}
+                        onChange={(e) => onUpdate(itemId, 'measurementUnit', e.target.value)}
                         required
+                        disabled={isNewItemExisting}
+                        className={isNewItemExisting ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""}
                     />
                 </div>
                 <div className="input-group">
-                    <label htmlFor={`quantity-${id}`}>Quantity</label>
+                    <label htmlFor={`quantity-${itemId}`}>Quantity</label>
                     <input 
                         type="number" 
-                        id={`quantity-${id}`} 
+                        id={`quantity-${itemId}`} 
                         min="1" 
                         value={quantity === 0 ? '' : quantity} 
-                        onChange={(e) => onUpdate(id, 'quantity', parseFloat(e.target.value) || 0)} 
+                        onChange={(e) => onUpdate(itemId, 'quantity', parseFloat(e.target.value) || 0)} 
                         required
                     />
                 </div>
                 <div className="input-group">
-                    <label htmlFor={`unitPrice-${id}`}>Unit Price (PHP)</label>
+                    <label htmlFor={`unitPrice-${itemId}`}>Unit Price (PHP)</label>
                     <input 
                         type="number" 
-                        id={`unitPrice-${id}`} 
+                        id={`unitPrice-${itemId}`} 
                         min="1" 
                         step="0.01"
-                        value={unitPrice === 0 ? '' : unitPrice} 
-                        onChange={(e) => onUpdate(id, 'unitPrice', parseFloat(e.target.value) || 0)} 
+                        value={priceCatalog === 0 ? '' : priceCatalog} 
+                        onChange={(e) => onUpdate(itemId, 'unitPrice', parseFloat(e.target.value) || 0)} 
                         required
+                        disabled={isNewItemExisting}
+                        className={isNewItemExisting ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""}
                     />
                 </div>
             </div>
             <div className="total-price">
-                <div className="icon red" onClick={() => onDelete(id)}>
+                <div className="icon red cursor-pointer" onClick={() => onDelete(itemId)}>
                     <IconTrash size={18}/>
                 </div>
                 <p>Total Price: <span>PHP {totalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></p>

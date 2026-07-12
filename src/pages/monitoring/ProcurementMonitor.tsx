@@ -64,14 +64,7 @@ export default function ProcurementMonitor() {
         loadPpmpMonitoringData();
     }, []);
 
-    const ItemsCountCardData: ItemsCountCardData[] = [
-        {icon: 'package', title: 'Total Items in Planned', count: totalPlannedItemCount, color: 'gray'},
-        {icon: 'chart', title: 'Total Available Items', count: totalAvailableItemCount, color: 'blue'},
-        {icon: 'clock', title: 'Total Pending Items', count: totalPendingItemCount, color: 'yellow'},
-        {icon: 'check', title: 'Total Fulfilled Items', count: totalFulfilledItemCount, color: 'green'},
-    ];
-
-    const mockTrackingItems: ppmpMonitoringData[] = [
+    const [ppmpMonitoringData, setPpmpMonitoringData] = useState<ppmpMonitoringData[]>([
         {
             itemId: 1,
             itemName: "Solid State Drive (1TB NVMe Gen4)",
@@ -139,6 +132,46 @@ export default function ProcurementMonitor() {
             prHistory: [],
             prHistoryCount: 0,
         },
+    ]);
+
+    useEffect(() => {
+        const loadPpmpMonitoringData = async () => {
+            try {
+                await new Promise(resolve => setTimeout(resolve, 500));
+            } finally {
+                setIsInitialLoading(false);
+            }
+        };
+
+        loadPpmpMonitoringData();
+    }, []);
+
+    const [searchTerm, setSearchTerm] = useState<string>("");
+    const [filterOption, setFilterOption] = useState<string>("");
+
+    let processedData = ppmpMonitoringData.filter((item) => {
+        const searchLower = searchTerm.toLowerCase();
+        const matchesSearch = searchTerm === "" || item.itemName.toLowerCase().includes(searchLower);
+
+        let matchesStatus = true;
+        if (filterOption === "pendingItems") matchesStatus = item.pendingQuantity > 0;
+        if (filterOption === "fulfilledItems") matchesStatus = item.fulfilledQuantity > 0;
+        if (filterOption === "availableItems") matchesStatus = item.availableQuantity > 0;
+
+        return matchesSearch && matchesStatus;
+    });
+
+    if (filterOption === "ascendingByItemName") {
+        processedData.sort((a, b) => a.itemName.localeCompare(b.itemName));
+    } else if (filterOption === "descendingByItemName") {
+        processedData.sort((a, b) => b.itemName.localeCompare(a.itemName));
+    }
+
+    const ItemsCountCardData: ItemsCountCardData[] = [
+        {icon: 'package', title: 'Total Items in Planned', count: totalPlannedItemCount, color: 'gray'},
+        {icon: 'chart', title: 'Total Available Items', count: totalAvailableItemCount, color: 'blue'},
+        {icon: 'clock', title: 'Total Pending Items', count: totalPendingItemCount, color: 'yellow'},
+        {icon: 'check', title: 'Total Fulfilled Items', count: totalFulfilledItemCount, color: 'green'},
     ];
 
   return (
@@ -158,11 +191,11 @@ export default function ProcurementMonitor() {
                 <h2>Monitor and Track Items</h2>
                 <div className="search-container">
                     <IconSearch size={24} />
-                    <input type="text" placeholder="Search Items..." className="search-input" />
+                    <input type="text" placeholder="Search Items..." className="search-input" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                 </div>
                 <div className="filter-container">
                     <IconFilter size={24} />
-                    <select className="filter-select">
+                    <select className="filter-select" value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
                         <option value="">Filter by:</option>
                         <option value="ascendingByItemName">Ascending Item Name</option>
                         <option value="descendingByItemName">Descending Item Name</option>
@@ -173,7 +206,7 @@ export default function ProcurementMonitor() {
                 </div>
             </div>
             <div className="tracking-items-card-container">
-                    {mockTrackingItems.map((item, index) => (
+                    {processedData.map((item, index) => (
                         <TrackingItemCard 
                             key={index}
                             itemId={item.itemId} 

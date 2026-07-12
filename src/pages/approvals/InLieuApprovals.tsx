@@ -22,6 +22,7 @@ interface InLieuApprovalData {
     inLieuId: number;
     requestDate: string;
     requestedBy: string;
+    openFundsUtilized?: number;
     inLieuReducedItems: Item[];
     inLieuAdditionItems: Item[];
     budgetImpact: BudgetImpact;
@@ -32,23 +33,12 @@ export default function InLieuApprovals() {
     const [isLoading, setIsLoading] = useState(false);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
 
-    useEffect(() => {
-        const loadInLieuApprovalData = async () => {
-            try {
-                await new Promise(resolve => setTimeout(resolve, 500));
-            } finally {
-                setIsInitialLoading(false);
-            }
-        };
-
-        loadInLieuApprovalData();
-    }, []);
-
     const inLieuApprovalData: InLieuApprovalData[] = [
         {
             inLieuId: 1,
             requestDate: "2024-06-01",
             requestedBy: "John Doe",
+            openFundsUtilized: 1030,
             inLieuReducedItems: [
                 {
                     itemId: 1,
@@ -105,8 +95,8 @@ export default function InLieuApprovals() {
         },
         {
             inLieuId: 2,
-            requestDate: "2024-06-01",
-            requestedBy: "John Doe",
+            requestDate: "2023-06-01",
+            requestedBy: "John jerson",
             inLieuReducedItems: [
                 {
                     itemId: 1,
@@ -135,6 +125,18 @@ export default function InLieuApprovals() {
             status: "Rejected"
         }
     ];
+
+    useEffect(() => {
+        const loadInLieuApprovalData = async () => {
+            try {
+                await new Promise(resolve => setTimeout(resolve, 500));
+            } finally {
+                setIsInitialLoading(false);
+            }
+        };
+
+        loadInLieuApprovalData();
+    }, []);
 
     return (
         <main className="page-container approvals">
