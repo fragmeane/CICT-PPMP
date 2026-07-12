@@ -221,7 +221,7 @@ export default function InLieuReallocation() {
                         </div>
                         <div className="new-items-card-container">
                             {newItemsArray.map((item) => (
-                                <NewItemCard key={item.itemId} itemId={item.itemId} itemName={item.name} unitMeasurement={item.measurementUnit} quantity={item.quantity} priceCatalog={item.unitPrice} onDelete={handleDeleteItem} onUpdate={handleUpdateItem} ppmpReallocationData={ppmpReallocationData} newItemsArray={newItemsArray} />
+                                <NewItemCard key={item.itemId} itemId={item.itemId} itemName={item.name} unitMeasurement={item.measurementUnit} quantity={item.quantity} priceCatalog={item.unitPrice} onDelete={handleDeleteItem} onUpdate={handleUpdateItem} ppmpReallocationData={ppmpReallocationData} />
                             ))}
                         </div>
                     </div>

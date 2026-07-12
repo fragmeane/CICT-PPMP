@@ -253,6 +253,9 @@
 
         & > input {
             @apply flex-1 bg-transparent outline-none text-sm;
+            &:disabled{
+                @apply bg-gray-100 text-gray-500 cursor-not-allowed;
+            }
         }
 
         & > .input-icon {
