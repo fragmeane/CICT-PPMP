@@ -43,11 +43,6 @@ export default function Dashboard(){
 
     useEffect(() => {
         const loadDashboardData = async () => {
-            const accessToken = await getAccessToken();
-            if(!accessToken){
-                navigate('/login');
-                toast.error("User not logged in. Please log in again.");
-            }
             try {
                 await new Promise(resolve => setTimeout(resolve, 500));
             } finally {

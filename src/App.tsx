@@ -1,6 +1,6 @@
-import { BrowserRouter, Routes, Route, useLocation, matchPath } from 'react-router';
+import { BrowserRouter, Routes, Route, useLocation, matchPath, useNavigate } from 'react-router';
 import './App.css'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Landing from './pages/landing/Landing';
 import Login from './pages/login/Login';
 import ForgotPassword from './pages/login/ForgotPassword';
@@ -14,6 +14,8 @@ import InLieuReallocation from './pages/reallocation/InLieuReallocation';
 import InLieuApprovals from './pages/approvals/InLieuApprovals';
 import UserManagement from './pages/usermanagement/UserManagement';
 import Settings from './pages/settings/Settings';
+import { getAccessToken } from '../supadb';
+import { toast } from './components/toast/ToastService';
 
 function App() {
 
@@ -33,9 +35,54 @@ function AppWrapper() {
   const hideNav = noNavPaths.some(path => matchPath(path, location.pathname));
   const fiscalYears= [2022, 2023, 2024, 2025];
   const currentFiscalYear = 2022;
-  const role = 'admin'; // Replace with the actual role of the user
-  const userFullName = 'Jerson Patrick Valdez'; // Replace with the actual full name of the user
-  const userEmailAddress = '@jerson@gmail.com'; // Replace with the actual email address of the user
+  const [role, setRole] = useState<string>('');
+  const [userFullName, setUserFullName] = useState<string>('');
+  const [userEmailAddress, setUserEmailAddress] = useState<string>('');
+  
+  const navigate = useNavigate();
+  useEffect(() => {
+    const checkAccess = async () => {
+      const accessToken = await getAccessToken();
+      if(!accessToken){
+        navigate('/login');
+        toast.error("User not logged in. Please log in again.");
+        return;
+      }
+    };
+    checkAccess();
+  }, []);
+
+  useEffect(() => {
+    const getFullNameEmail = async () => {
+      const accessToken = await getAccessToken();
+      if(!accessToken){
+        navigate('/login');
+        toast.error("User not logged in. Please log in again.");
+        return;
+      }
+      await fetch("http://127.0.0.1:8000/api/user/header_info", {
+        method: "GET",
+        headers: {
+          Authorization:
+            `Bearer ${accessToken}`
+        }
+      })
+      .then(response =>{
+        if(!response.ok){
+          toast.error("Failed to retrieve header info.");
+        }
+        return response.json()
+      })
+      .then(result =>{
+        console.log("header info retrieved: ", result);
+        setUserFullName(result.UserFullName);
+        setUserEmailAddress(result.UserEmailAddress);
+        setRole(result.UserRole);
+      });
+    };
+      getFullNameEmail();
+  }, [location.pathname]);
+
   return(
     <>
       {!hideNav && (

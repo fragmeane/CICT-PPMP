@@ -4,9 +4,6 @@ import ItemsCountCard from '../../components/cards/items_count_card/ItemsCountCa
 import MasterlistTable from '../../components/tables/masterlist_table/MasterlistTable';
 import LoadingWrapper from '../../components/wrappers/loading wrapper/LoadingWrapper';
 import PpmpMasterlistSkeleton from '../../components/skeleton/skeleton_pages/PpmpMasterlistSkeleton';
-import { useNavigate } from 'react-router';
-import { toast } from '../../components/toast/ToastService';
-import { getAccessToken } from '../../../supadb';
 
 interface PPMPItem {
     itemId: number;
@@ -20,7 +17,6 @@ interface PPMPItem {
 }
 
 export default function PpmpMasterlist() {
-    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
 
@@ -34,11 +30,6 @@ export default function PpmpMasterlist() {
     
     useEffect(() => {
         const loadPpmpTableData = async () => {
-            const accessToken = await getAccessToken();
-            if(!accessToken){
-                navigate('/login');
-                toast.error("User not logged in. Please log in again.");
-            }
             try {
                 await fetch('https://test-ppmp.onrender.com/api/masterlist/', {
                     method: "GET",
