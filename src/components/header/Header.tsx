@@ -11,9 +11,10 @@ import { toast } from '../toast/ToastService';
 interface HeaderProps {
   userFullName: string;
   userEmailAddress: string;
+  fiscalYears: number[];
 }
 
-export default function Header({ userFullName, userEmailAddress }: HeaderProps) {
+export default function Header({ userFullName, userEmailAddress, fiscalYears }: HeaderProps) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isUploadPPMPDialogOpen, setIsUploadPPMPDialogOpen] = useState(false);
   
@@ -87,7 +88,7 @@ export default function Header({ userFullName, userEmailAddress }: HeaderProps) 
         </button>
       )}
 
-      <UploadPPMP isOpen={isUploadPPMPDialogOpen} onClose={() => {setIsUploadPPMPDialogOpen(false)}} />
+      <UploadPPMP fiscalYears={fiscalYears} isOpen={isUploadPPMPDialogOpen} onClose={() => {setIsUploadPPMPDialogOpen(false)}} />
         
       {/*<button className="notification-button">
         <span className="notification-count">3</span>

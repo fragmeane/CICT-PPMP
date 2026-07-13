@@ -4,6 +4,9 @@ import ItemsCountCard from '../../components/cards/items_count_card/ItemsCountCa
 import MasterlistTable from '../../components/tables/masterlist_table/MasterlistTable';
 import LoadingWrapper from '../../components/wrappers/loading wrapper/LoadingWrapper';
 import PpmpMasterlistSkeleton from '../../components/skeleton/skeleton_pages/PpmpMasterlistSkeleton';
+import { toast } from '../../components/toast/ToastService';
+import { useOutletContext } from 'react-router';
+import { showCircleLoadingDialog } from '../../components/dialogs/circle_loading_dialog/CircleLoadingDialogService';
 
 interface PPMPItem {
     itemId: number;
@@ -17,6 +20,9 @@ interface PPMPItem {
 }
 
 export default function PpmpMasterlist() {
+    const { selectedFiscalYear } = useOutletContext<{ selectedFiscalYear: number }>();
+    const [fiscalYearHolder, setFiscalYearHolder] = useState<number | null>(null);
+
     const [isLoading, setIsLoading] = useState(false);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
 
@@ -30,17 +36,22 @@ export default function PpmpMasterlist() {
     
     useEffect(() => {
         const loadPpmpTableData = async () => {
+            handleMasterlistFiscalYearChange(selectedFiscalYear);
             try {
+                const formData = new FormData();
+                formData.append('year', String(selectedFiscalYear));
                 await fetch('https://test-ppmp.onrender.com/api/masterlist/', {
-                    method: "GET",
+                    method: "POST",
+                    body: formData
                 }).then(response =>{
                     if(!response.ok){
-                        alert(response.status)
+                        toast.error("Failed to fetch PPMP data. Please try again later.");
                     }
                     return response.json()
                 })
                 .then(result =>{
                     setPpmpTableData(result);
+                    setFiscalYearHolder(selectedFiscalYear);
                 })
             } finally {
                 setIsInitialLoading(false);
@@ -48,7 +59,7 @@ export default function PpmpMasterlist() {
         };
 
         loadPpmpTableData();
-    }, []);
+    }, [selectedFiscalYear]);
 
     const ItemsCountCardData: {icon: string, title: string, count: number, color: string}[] = [
         {icon: 'package', title: 'Total Items in Planned', count: totalPlannedItemCount, color: 'gray'},
@@ -61,6 +72,13 @@ export default function PpmpMasterlist() {
     function exportLatestPPMP() {
         // Placeholder function for exporting the latest PPMP data
         alert("Exporting latest PPMP data...");
+    }
+
+    function handleMasterlistFiscalYearChange(newFiscalYear: number) {
+        if (newFiscalYear !== fiscalYearHolder) {
+            setIsInitialLoading(true);
+            setFiscalYearHolder(newFiscalYear);
+        }
     }
 
     return (

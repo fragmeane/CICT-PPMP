@@ -26,13 +26,14 @@ function PrivateLayout() {
     const navigate = useNavigate();
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     
-    const fiscalYears = [2022, 2023, 2024, 2025];
+    const [fiscalYears, setFiscalYears] = useState<number[]>([2022, 2023, 2024, 2025]);
+    const [selectedFiscalYear, setSelectedFiscalYear] = useState<number>(2025);
     const [userFullName, setUserFullName] = useState<string>('');
     const [userEmailAddress, setUserEmailAddress] = useState<string>('');
     const [userRole, setUserRole] = useState<string>('');
 
     useEffect(() => {
-        const getHeaderInfo = async () => {
+        const fetchInitialData = async () => {
             const accessToken = await getAccessToken();
             
             if (!accessToken) {
@@ -42,40 +43,63 @@ function PrivateLayout() {
             }
 
             try {
-                const response = await fetch("https://test-ppmp.onrender.com/api/user/header_info", {
-                    method: "GET",
-                    headers: { Authorization: `Bearer ${accessToken}` }
-                });
+                const [fiscalResponse, headerResponse] = await Promise.all([
+                    fetch("https://test-ppmp.onrender.com/api/fiscal_years", {
+                        method: "GET",
+                        headers: { Authorization: `Bearer ${accessToken}` }
+                    }),
+                    fetch("https://test-ppmp.onrender.com/api/user/header_info", {
+                        method: "GET",
+                        headers: { Authorization: `Bearer ${accessToken}` }
+                    })
+                ]);
 
-                if (!response.ok) {
-                    toast.error("Failed to retrieve header info.");
-                    navigate('/login');
-                    return;
+                if (!fiscalResponse.ok) {
+                    toast.error("Failed to retrieve fiscal years.");
+                } else {
+                    const fiscalResult = await fiscalResponse.json();
+                    console.log("Fiscal years retrieved: ", fiscalResult);
+                    
+                    const extractedYears = fiscalResult.map((item: any) => item.Year);
+                    
+                    setFiscalYears(extractedYears);
                 }
 
-                const result = await response.json();
-                console.log("Header info retrieved: ", result);
-                setUserFullName(result.UserFullName);
-                setUserEmailAddress(result.UserEmailAddress);
-                setUserRole(result.UserRole);
+                if (!headerResponse.ok) {
+                    toast.error("Failed to retrieve header info.");
+                    navigate('/login');
+                    return; 
+                } else {
+                    const headerResult = await headerResponse.json();
+                    console.log("Header info retrieved: ", headerResult);
+                    setUserFullName(headerResult.UserFullName);
+                    setUserEmailAddress(headerResult.UserEmailAddress);
+                    setUserRole(headerResult.UserRole);
+                }
+
             } catch (error) {
-                console.error("Error fetching user info:", error);
-                toast.error("Network error.");
+                console.error("Error fetching initial data:", error);
+                toast.error("Network error. Please try again later.");
             } finally {
                 setIsCheckingAuth(false);
             }
         };
 
-        getHeaderInfo();
+        fetchInitialData();
     }, [navigate]);
+
+    function handleFiscalYearChange(event: React.ChangeEvent<HTMLSelectElement>) {
+        const newFiscalYear = parseInt(event.target.value);
+        setSelectedFiscalYear(newFiscalYear);
+    }
 
     return (
         <>
-            <Nav userRole={userRole} fiscalYear={fiscalYears} />
-            <Header userFullName={userFullName} userEmailAddress={userEmailAddress} />
+            <Nav userRole={userRole} fiscalYears={fiscalYears} selectedFiscalYear={selectedFiscalYear} handleFiscalYearChange={handleFiscalYearChange} />
+            <Header userFullName={userFullName} userEmailAddress={userEmailAddress} fiscalYears={fiscalYears} />
 
             <main className="main-content-wrapper">
-                <Outlet context={{ userRole }} /> 
+                <Outlet context={{ userRole, selectedFiscalYear }} /> 
             </main>
         </>
     );

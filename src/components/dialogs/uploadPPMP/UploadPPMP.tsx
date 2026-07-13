@@ -4,13 +4,15 @@ import { IconFileTypeXls, IconCircleFilled, IconCircleCheckFilled, IconArrowNarr
 import InfoNote from "../../notes/info_note/InfoNote";
 import { toast } from "../../toast/ToastService";
 import { showCircleLoadingDialog } from "../circle_loading_dialog/CircleLoadingDialogService";
+import {notify, confirm} from "../../dialogs/global_dialog/DialogService";
 
 interface UploadPPMPProps {
+    fiscalYears: number[];
     isOpen: boolean;
     onClose: () => void;
 }
 
-export default function UploadPPMP({ isOpen, onClose }: UploadPPMPProps) {
+export default function UploadPPMP({ fiscalYears, isOpen, onClose }: UploadPPMPProps) {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [fileUploaded, setFileUploaded] = useState<File | null>(null);
@@ -31,13 +33,27 @@ export default function UploadPPMP({ isOpen, onClose }: UploadPPMPProps) {
     const [mapColumnsStep, setMapColumnsStep] = useState("upcoming");
     const [previewImportStep, setPreviewImportStep] = useState("upcoming");
 
+    const year = new Date().getFullYear();
+
     useEffect(() => {
         const dialog = dialogRef.current;
         if (!dialog) return;
 
         if (isOpen) {
             if (!dialog.hasAttribute('open')) {
-                dialog.showModal();
+                if (year === fiscalYears.find(fy => fy === year)) {
+                    toast.warning("Current fiscal year is already present in the system. Uploading a new PPMP will overwrite the existing data for this year.");
+                    confirm("Overwrite Existing Data", "Note: Current fiscal year is already present in the system. Uploading a new PPMP will overwrite the existing data for this year.", "warning", "Yes, Overwrite")
+                    .then((confirmed) => {
+                        if (confirmed) {
+                            dialog.showModal();
+                        } else {
+                            onClose();
+                        }
+                    });
+                } else {
+                    dialog.showModal();
+                }
             }
         } else {
             dialog.close();
@@ -53,8 +69,6 @@ export default function UploadPPMP({ isOpen, onClose }: UploadPPMPProps) {
         e.preventDefault();
         onClose();
     };
-
-    const year = 2024;
 
     function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0];
