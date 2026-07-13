@@ -108,7 +108,7 @@ export default function UploadPPMP({ isOpen, onClose }: UploadPPMPProps) {
         formData.append("unit", String(selectedUnit));
         formData.append("quantity", String(selectedTotalQuantity));
         formData.append("unitPrice", String(selectedPricePerUnit));
-        const response = await fetch("http://127.0.0.1:8000/api/ppmp/", {
+        const response = await fetch("https://test-ppmp.onrender.com/api/ppmp/", {
             method: "POST",
             body: formData
         });
@@ -131,7 +131,7 @@ export default function UploadPPMP({ isOpen, onClose }: UploadPPMPProps) {
         formData.append("unit", String(selectedUnit));
         formData.append("quantity", String(selectedTotalQuantity));
         formData.append("unitPrice", String(selectedPricePerUnit));
-        const response = await fetch("http://127.0.0.1:8000/api/import/", {
+        const response = await fetch("https://test-ppmp.onrender.com/api/import/", {
             method: "POST",
             body: formData
         });

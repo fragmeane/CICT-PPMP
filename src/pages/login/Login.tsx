@@ -5,7 +5,7 @@ import { IconEye } from '@tabler/icons-react';
 import { IconEyeOff } from '@tabler/icons-react';
 import { IconArrowNarrowRight } from '@tabler/icons-react';
 import { Link, useNavigate } from 'react-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LeftLoginContainer from '../../components/containers/left_login_container/LeftLoginContainer';
 import { toast } from '../../components/toast/ToastService.js';
 import { supabase } from '../../../supadb';
@@ -18,6 +18,25 @@ export default function Login(){
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+
+    useEffect(() => {
+        const checkSession = async () => {
+            const loadingDialog = showCircleLoadingDialog();
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    toast.info("You are already logged in. Redirecting to dashboard...");
+                    navigate("/dashboard");
+                }
+            } catch (error) {
+                console.error("Error checking session:", error);
+                toast.error("Network error. Please try again later.");
+            } finally {
+                loadingDialog();
+            }
+        };
+        checkSession();
+    }, [navigate]);
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
