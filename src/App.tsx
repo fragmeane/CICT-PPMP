@@ -1,112 +1,123 @@
-import { BrowserRouter, Routes, Route, useLocation, matchPath, useNavigate } from 'react-router';
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate, Outlet, useNavigate } from 'react-router';
+import './App.css';
 import { useEffect, useState } from 'react';
+
+// Pages
 import Landing from './pages/landing/Landing';
 import Login from './pages/login/Login';
 import ForgotPassword from './pages/login/ForgotPassword';
 import ResetPassword from './pages/login/ResetPassword';
 import Dashboard from './pages/dashboard/Dashboard';
-import Nav from './components/nav/Nav';
-import Header from './components/header/Header';
 import PpmpMasterlist from './pages/masterlist/PpmpMasterlist';
 import ProcurementMonitor from './pages/monitoring/ProcurementMonitor';
 import InLieuReallocation from './pages/reallocation/InLieuReallocation';
 import InLieuApprovals from './pages/approvals/InLieuApprovals';
 import UserManagement from './pages/usermanagement/UserManagement';
 import Settings from './pages/settings/Settings';
+
+// Components
+import Nav from './components/nav/Nav';
+import Header from './components/header/Header';
 import { getAccessToken } from '../supadb';
 import { toast } from './components/toast/ToastService';
+import { showCircleLoadingDialog } from './components/dialogs/circle_loading_dialog/CircleLoadingDialogService'; // Assuming you have this!
 
-function App() {
+function PrivateLayout() {
+    const navigate = useNavigate();
+    const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+    
+    const fiscalYears = [2022, 2023, 2024, 2025];
+    const [userFullName, setUserFullName] = useState<string>('');
+    const [userEmailAddress, setUserEmailAddress] = useState<string>('');
+    const [userRole, setUserRole] = useState<string>('');
 
-  return (
-    <>
-      <BrowserRouter>
-        <AppWrapper />
-      </BrowserRouter>
-    </>
-  )
-}
+    useEffect(() => {
+        const getHeaderInfo = async () => {
+            const accessToken = await getAccessToken();
+            
+            if (!accessToken) {
+                toast.error("User not logged in. Please log in again.");
+                navigate('/login');
+                return;
+            }
 
-function AppWrapper() {
+            try {
+                const response = await fetch("https://test-ppmp.onrender.com/api/user/header_info", {
+                    method: "GET",
+                    headers: { Authorization: `Bearer ${accessToken}` }
+                });
 
-  const location = useLocation()
-  const noNavPaths = ['/', '/login', '/forgot-password', '/reset-password'];
-  const hideNav = noNavPaths.some(path => matchPath(path, location.pathname));
-  const fiscalYears= [2022, 2023, 2024, 2025];
-  const currentFiscalYear = 2022;
-  const [role, setRole] = useState<string>('');
-  const [userFullName, setUserFullName] = useState<string>('');
-  const [userEmailAddress, setUserEmailAddress] = useState<string>('');
-  
-  const navigate = useNavigate();
-  useEffect(() => {
-    const checkAccess = async () => {
-      const accessToken = await getAccessToken();
-      if(!accessToken){
-        navigate('/login');
-        toast.error("User not logged in. Please log in again.");
-        return;
-      }
-    };
-    checkAccess();
-  }, []);
+                if (!response.ok) {
+                    toast.error("Failed to retrieve header info.");
+                    navigate('/login');
+                    return;
+                }
 
-  useEffect(() => {
-    const getFullNameEmail = async () => {
-      const accessToken = await getAccessToken();
-      if(!accessToken){
-        navigate('/login');
-        toast.error("User not logged in. Please log in again.");
-        return;
-      }
-      await fetch("http://127.0.0.1:8000/api/user/header_info", {
-        method: "GET",
-        headers: {
-          Authorization:
-            `Bearer ${accessToken}`
-        }
-      })
-      .then(response =>{
-        if(!response.ok){
-          toast.error("Failed to retrieve header info.");
-        }
-        return response.json()
-      })
-      .then(result =>{
-        console.log("header info retrieved: ", result);
-        setUserFullName(result.UserFullName);
-        setUserEmailAddress(result.UserEmailAddress);
-        setRole(result.UserRole);
-      });
-    };
-      getFullNameEmail();
-  }, [location.pathname]);
+                const result = await response.json();
+                console.log("Header info retrieved: ", result);
+                setUserFullName(result.UserFullName);
+                setUserEmailAddress(result.UserEmailAddress);
+                setUserRole(result.UserRole);
+            } catch (error) {
+                console.error("Error fetching user info:", error);
+                toast.error("Network error.");
+            } finally {
+                setIsCheckingAuth(false);
+            }
+        };
 
-  return(
-    <>
-      {!hideNav && (
+        getHeaderInfo();
+    }, [navigate]);
+
+    return (
         <>
-          <Nav userRole={role} fiscalYear={fiscalYears} />
-          <Header userFullName={userFullName} userEmailAddress={userEmailAddress} />
-        </>
-      )}
-        <Routes>
-          <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+            <Nav userRole={userRole} fiscalYear={fiscalYears} />
+            <Header userFullName={userFullName} userEmailAddress={userEmailAddress} />
 
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/ppmp-master-list" element={<PpmpMasterlist />} />
-            <Route path="/procurement-monitor" element={<ProcurementMonitor />} />
-            <Route path="/in-lieu-reallocation" element={<InLieuReallocation />} />
-            <Route path="/in-lieu-approvals" element={<InLieuApprovals />} />
-            <Route path="/user-management" element={<UserManagement />} />
-            <Route path="/settings" element={<Settings />} />
-        </Routes>
-    </>
-  )
+            <main className="main-content-wrapper">
+                <Outlet context={{ userRole }} /> 
+            </main>
+        </>
+    );
 }
 
-export default App
+function AdminRoute({ children }: { children: React.ReactNode }) {
+    return children;
+}
+
+export default function App() {
+    return (
+        <BrowserRouter>
+            <Routes>
+                {/* PUBLIC ROUTES (No Nav, No Header, No Auth Check) */}
+                <Route path="/" element={<Landing />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+
+                {/* PRIVATE ROUTES (Protected by PrivateLayout) kailangan naka logged in ang user */}
+                <Route element={<PrivateLayout />}>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/ppmp-master-list" element={<PpmpMasterlist />} />
+                    <Route path="/procurement-monitor" element={<ProcurementMonitor />} />
+                    <Route path="/in-lieu-reallocation" element={<InLieuReallocation />} />
+                    <Route path="/in-lieu-approvals" element={<InLieuApprovals />} />
+                    <Route path="/settings" element={<Settings />} />
+
+                    {/* Admin Only Route */}
+                    <Route 
+                        path="/user-management" 
+                        element={
+                            <AdminRoute>
+                                <UserManagement />
+                            </AdminRoute>
+                        } 
+                    />
+                </Route>
+
+                {/* Catch-all for unknown routes */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+        </BrowserRouter>
+    );
+}
