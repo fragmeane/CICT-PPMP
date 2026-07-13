@@ -98,7 +98,7 @@ export default function Nav({ userRole, selectedFiscalYear, fiscalYears, handleF
             </div>
             <hr />
             <div className="nav-links">
-                {(userRole === 'admin' ? adminNavLink : navLink).map((link, index) => (
+                {(userRole === 'Admin' ? adminNavLink : navLink).map((link, index) => (
                     <NavLink 
                         key={index} 
                         to={link.to} 
