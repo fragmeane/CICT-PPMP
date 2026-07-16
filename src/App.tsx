@@ -25,8 +25,8 @@ function PrivateLayout() {
     const navigate = useNavigate();
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     
-    const [fiscalYears, setFiscalYears] = useState<number[]>([2022, 2023, 2024, 2025]);
-    const [selectedFiscalYear, setSelectedFiscalYear] = useState<number>(2025);
+    const [fiscalYears, setFiscalYears] = useState<number[]>([]);
+    const [selectedFiscalYear, setSelectedFiscalYear] = useState<number>(new Date().getFullYear());
     const [userFullName, setUserFullName] = useState<string>('');
     const [userEmailAddress, setUserEmailAddress] = useState<string>('');
     const [userRole, setUserRole] = useState<string>('');
@@ -62,6 +62,7 @@ function PrivateLayout() {
                     const extractedYears = fiscalResult.map((item: any) => item.Year);
                     
                     setFiscalYears(extractedYears);
+                    setSelectedFiscalYear(extractedYears[extractedYears.length - 1]);
                 }
 
                 if (!headerResponse.ok) {
