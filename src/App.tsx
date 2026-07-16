@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useNavigate } from 'react-router';
+import { FourSquare } from 'react-loading-indicators';
 import './App.css';
 import { useEffect, useState } from 'react';
 
@@ -59,8 +60,8 @@ function PrivateLayout() {
                     const fiscalResult = await fiscalResponse.json();
                     console.log("Fiscal years retrieved: ", fiscalResult);
                     
-                    const extractedYears = fiscalResult.map((item: any) => item.Year);
-                    
+                    const extractedYears = fiscalResult.map((item: any) => Number(item.Year));
+                    setSelectedFiscalYear(Number(extractedYears[extractedYears.length - 1]));
                     setFiscalYears(extractedYears);
                     setSelectedFiscalYear(extractedYears[extractedYears.length - 1]);
                 }
@@ -97,7 +98,7 @@ function PrivateLayout() {
     if (isCheckingAuth) {
         return (
             <div className="h-screen w-screen flex items-center justify-center">
-                <p>Verifying session...</p>
+                <FourSquare color="var(--primary)" size="large" text="Loading..."/>
             </div>
         );
     }
