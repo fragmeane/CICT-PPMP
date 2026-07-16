@@ -9,7 +9,7 @@ import UploadPPMP from '../dialogs/uploadPPMP/UploadPPMP';
 interface HeaderProps {
   userFullName: string;
   userEmailAddress: string;
-  fiscalYears: number[];
+  fiscalYears: string[];
 }
 
 export default function Header({ userFullName, userEmailAddress, fiscalYears }: HeaderProps) {

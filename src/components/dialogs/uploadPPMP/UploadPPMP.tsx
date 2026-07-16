@@ -7,7 +7,7 @@ import { showCircleLoadingDialog } from "../circle_loading_dialog/CircleLoadingD
 import { confirm} from "../../dialogs/global_dialog/DialogService";
 
 interface UploadPPMPProps {
-    fiscalYears: number[];
+    fiscalYears: string[];
     isOpen: boolean;
     onClose: () => void;
 }
@@ -33,7 +33,7 @@ export default function UploadPPMP({ fiscalYears, isOpen, onClose }: UploadPPMPP
     const [mapColumnsStep, setMapColumnsStep] = useState("upcoming");
     const [previewImportStep, setPreviewImportStep] = useState("upcoming");
 
-    const year = new Date().getFullYear();
+    const year = "2025";
 
     useEffect(() => {
         const dialog = dialogRef.current;
@@ -41,7 +41,7 @@ export default function UploadPPMP({ fiscalYears, isOpen, onClose }: UploadPPMPP
 
         if (isOpen) {
             if (!dialog.hasAttribute('open')) {
-                if (year === fiscalYears.find(fy => fy === year)) {
+                if (year.toString() === fiscalYears.find(fy => fy === year.toString())) {
                     toast.warning("Current fiscal year is already present in the system. Uploading a new PPMP will overwrite the existing data for this year.");
                     confirm("Overwrite Existing Data", "Note: Current fiscal year is already present in the system. Uploading a new PPMP will overwrite the existing data for this year.", "warning", "Yes, Overwrite")
                     .then((confirmed) => {

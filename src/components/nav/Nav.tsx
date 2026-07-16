@@ -18,14 +18,12 @@ interface NavItem {
 
 interface NavProps {
     userRole: string;
-    selectedFiscalYear: number;
-    fiscalYears: number[];
+    selectedFiscalYear: string;
+    fiscalYears: string[];
     handleFiscalYearChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export default function Nav({ userRole, selectedFiscalYear, fiscalYears, handleFiscalYearChange }: NavProps) {
-
-    const sortedFiscalYears = [...fiscalYears].sort((a, b) => b - a);
 
     const navLink: NavItem[] = [       
         {name: 'Dashboard', to: 'dashboard', icon: <IconLayoutDashboard size={20} />},
@@ -91,7 +89,7 @@ export default function Nav({ userRole, selectedFiscalYear, fiscalYears, handleF
                     Fiscal Year:
                 </label>
                 <select name="fiscal-year" id="fiscal-year" value={selectedFiscalYear} onChange={handleFiscalYearChange}>
-                    {sortedFiscalYears.map((year, index) => (
+                    {fiscalYears.map((year, index) => (
                         <option key={index} value={year}>{year}</option>
                     ))}
                 </select>

@@ -26,8 +26,8 @@ function PrivateLayout() {
     const navigate = useNavigate();
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     
-    const [fiscalYears, setFiscalYears] = useState<number[]>([]);
-    const [selectedFiscalYear, setSelectedFiscalYear] = useState<number>(new Date().getFullYear());
+    const [fiscalYears, setFiscalYears] = useState<string[]>([]);
+    const [selectedFiscalYear, setSelectedFiscalYear] = useState<string>(new Date().getFullYear().toString());
     const [userFullName, setUserFullName] = useState<string>('');
     const [userEmailAddress, setUserEmailAddress] = useState<string>('');
     const [userRole, setUserRole] = useState<string>('');
@@ -60,9 +60,10 @@ function PrivateLayout() {
                     const fiscalResult = await fiscalResponse.json();
                     console.log("Fiscal years retrieved: ", fiscalResult);
                     
-                    const extractedYears = fiscalResult.map((item: any) => Number(item.Year));
-                    setSelectedFiscalYear(Number(extractedYears[extractedYears.length - 1]));
-                    setFiscalYears(extractedYears);
+                    const extractedYears = fiscalResult.map((item: any) => item.Year);
+                    const sortedYears = extractedYears.sort((a: string, b: string) => b.localeCompare(a));
+                    setSelectedFiscalYear(sortedYears[0]);
+                    setFiscalYears(sortedYears);
                 }
 
                 if (!headerResponse.ok) {
@@ -89,7 +90,7 @@ function PrivateLayout() {
     }, [navigate]);
 
     function handleFiscalYearChange(event: React.ChangeEvent<HTMLSelectElement>) {
-        const newFiscalYear = parseInt(event.target.value);
+        const newFiscalYear = event.target.value;
         setSelectedFiscalYear(newFiscalYear);
         toast.success(`Fiscal year changed to ${newFiscalYear}`);
     }
