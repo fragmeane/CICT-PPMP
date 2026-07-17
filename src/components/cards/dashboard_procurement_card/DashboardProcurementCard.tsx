@@ -34,7 +34,7 @@ export default function DashboardProcurementCard({
         requested: 'blue',
         reallocate: 'orange',
         upload: 'purple',
-        cancel: 'gray',
+        cancelled: 'gray',
         default: 'yellow'
     };
 
@@ -45,7 +45,7 @@ export default function DashboardProcurementCard({
         requested: <IconFileStack size={18} />,
         reallocate: <IconTransform size={18} />,
         upload: <IconCloudUpload size={18} />,
-        cancel: <IconClockCancel size={18} />,
+        cancelled: <IconClockCancel size={18} />,
         default: <IconClock size={18} />
     };
 

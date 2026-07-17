@@ -3,6 +3,7 @@ import { IconFileStack, IconChartHistogram, IconClock, IconCircleDashedCheck, Ic
 import { useEffect, useRef, useState } from "react";
 import PrintPR from "../print_PR/PrintPR";
 import { getAccessToken, getUserID } from "../../../../supadb"
+import { confirm } from "../../dialogs/global_dialog/DialogService";
 import { toast } from "../../toast/ToastService";
 import { useOutletContext } from "react-router";
 import { showCircleLoadingDialog } from "../circle_loading_dialog/CircleLoadingDialogService";
@@ -78,11 +79,21 @@ export default function CreatePR({itemId, itemName, unitMeasurement, availableQu
     }
 
     async function handlePurchaseRequest() {
+        confirm("Create Purchase Request", "Note: This will create a new purchase request " + itemName + " with a request quantity of " + requestQuantity + ".", "info", "Continue, Create PR")
+            .then((confirmed) => {
+                if (confirmed) {
+                    proceedCreatePR();
+                }
+            }
+        );
+    }
+
+    async function proceedCreatePR() {
         if (requestQuantity === null || requestQuantity < 1 || requestQuantity > availableQuantity) {
             toast.error("Invalid request quantity. Please ensure it is between 1 and the available quantity.");
             return;
         }
-        
+
         const formData = new FormData();
         formData.append("item_id", String(itemId));
         formData.append("specifications", String(techSpecs));
